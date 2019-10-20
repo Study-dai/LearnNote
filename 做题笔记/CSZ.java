@@ -22,7 +22,7 @@ public class CSZ{
 }
 //输出结果请输入要猜的数字：（1-100）
 先用  javac CSZ.java -encoding utf8编译，编译通过
-然后用 CSZ.java 执行
+然后用 java CSZ执行
 1
 猜小了
 请输入要猜的数字：（1-100）
