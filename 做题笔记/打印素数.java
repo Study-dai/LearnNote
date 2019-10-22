@@ -1,5 +1,5 @@
  打印 1 - 100 之间所有的素数 
-public class Test {
+public class Test { 
 	public static void main(String[] args) {
         int i=0;
         for(i=1;i<=100;i++){
