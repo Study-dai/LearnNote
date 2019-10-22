@@ -1,0 +1,65 @@
+ //写代码实现: 给定三个 int 变量, 求其中的最大值和最小值. 
+//代码1：
+public class Test{
+   public static void main(String[] args){
+   int a=10;
+   int b=20;
+   int c=30;
+    if(a>b&&a>c&&b>c)
+    {
+        System.out.println("max= a"); 
+        System.out.println("min= c"); 
+    }
+    else if(a>b&&a>c&&c>b)
+  {
+    System.out.println("max= a"); 
+    System.out.println("min= b"); 
+  }
+  else if(b>a&&b>c&&a>c)
+  {
+    System.out.println("max= b"); 
+    System.out.println("min= c"); 
+  }
+  else if(b>a&&b>c&&a<c)
+  {
+    System.out.println("max= b"); 
+    System.out.println("min= a"); 
+  }
+  else if(c>a&&c>b&&a>b)
+  {
+    System.out.println("max= c"); 
+    System.out.println("min= b"); 
+  }else if(c>a&&c>b&&b>a)
+  {
+    System.out.println("max= c"); 
+    System.out.println("min= a"); 
+  }
+   }
+}
+//代码2：
+public class Test{
+   public static void main(String[] args){
+   int a=10;
+   int b=20;
+   int c=30;
+   int d;
+   if(a<b){
+       d=a;
+       a=b;
+       b=d;
+
+   }
+   if(a<c){
+       d=a;
+       a=c;
+       c=d;
+   }
+   if(b<c){
+       d=b;
+       b=c;
+       c=d;
+   }
+   System.out.println(a);
+   System.out.println(c);
+   }
+}
