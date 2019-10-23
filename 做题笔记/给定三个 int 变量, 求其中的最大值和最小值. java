@@ -59,7 +59,10 @@ public class Test{
        b=c;
        c=d;
    }
-   System.out.println(a);
-   System.out.println(c);
+  System.out.println("最大值是："+a);
+   System.out.println("最小值是："+c);
    }
 }
+//执行结果
+最大值是：30
+最小值是：10
