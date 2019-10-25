@@ -1,0 +1,106 @@
+- 编写一个类Calculator,有两个属性num1,num2,这两个数据的值，不能在定义的同时初始化，最后实现加减乘除四种运算. 
+public class Test {
+    public static void main(String [] args){
+        Calculator realize=new Calculator();
+        realize.add(1,2);
+        realize.subtract(3,2) ;
+        realize.ride(4,5);
+        realize.divide(0,7);
+    }
+}
+
+public class Calculator {
+    private int num1;
+    private int num2;
+    public void add(int x,int y){
+        System.out.println(x+y);
+    }
+    public void subtract(int x,int y){
+        System.out.println(x-y);
+    }
+    public void ride(int x,int y){
+        System.out.println(x*y);
+        }
+        public void divide(int x,int y){
+            if(x==0){
+                System.out.println("除数不能为0");
+            }else{
+                System.out.println(x/y);
+            }
+        }
+    }
+- 设计一个包含多个构造函数的类，并分别用这些构造函数来进行实例化对象。 
+public class Test {
+    public static void main(String [] args) {
+        Person sustdai=new Person("dai  ","男  ",19);
+        sustdai.show();
+        Person sustzhao=new Person("zhao","nan",12);
+        sustzhao.eat();
+        sustdai.sleep();
+    }
+}
+
+创建Person 类
+public class Person {
+    private String name;
+    private String sex;
+    private int age;
+
+    //构造方法
+    public Person(String name){
+        this.name=name;
+    }
+    public Person(String name, String sex, int age) {
+        this.name = name;
+        this.sex = sex;
+        this.age = age;
+    }
+    public void show(){
+        System.out.println("名字:"+name+"性别:"+
+                sex+"年龄:"+age);
+    }
+    //普通方法
+    public void eat(){
+        System.out.println(this.name+"吃饭");
+    }
+    public void sleep(){
+        System.out.println(this.name+"睡觉");
+    }
+}
+
+
+
+- 实现交换两个变量的值。要求：需要交换实参的值。
+ public class Test {
+    public static void main(String [] args){
+        Calculator transfrom=new Calculator();
+        transfrom.setNum1(10);
+        transfrom.setNum2(20);
+        System.out.println("num1:"+transfrom.getNum1()
+                +"num2:"+transfrom.getNum2());
+        //交换num1和num2的值
+        int tmp=transfrom.getNum1();
+        transfrom.setNum1(transfrom.getNum2());
+        transfrom.setNum2(tmp);
+        System.out.println("num1:"+transfrom.getNum1()
+                +"num2:"+transfrom.getNum2());
+    }
+}
+
+ class Calculator {
+    private int num1;//私有成员
+    private int num2;
+    public  int getNum1() {//获得num1的方法
+        return this.num1;
+    }
+    public void setNum1(int num1) {//设置num1的方法
+        this.num1 = num1;
+    }
+    public int getNum2() {//获得num2的方法
+        return this.num2;
+    }
+    public void setNum2(int num2) {//设置num2的方法
+        this.num2 = num2;
+    }
+}
+
