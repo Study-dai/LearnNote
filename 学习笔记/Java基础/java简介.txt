@@ -1,0 +1,33 @@
+1、java是啥
+
+java是一种面向对象的编程语言，区别于C语言的面向过程。
+
+其一，语法比较简单，学过计算机编程的开发者都能快速上手。
+
+其二，在若干了领域都有很强的竞争力，比如服务端编程，高性能网络程序，企业软件事务处理，分布式计算， Android 移动终端应用开发等等。
+
+2.java环境安装
+
+推荐安装指南
+https://blog.51cto.com/aiilive/2309267
+
+3.java编译器
+
+推荐初学使用 VsCode
+
+后面使用IDEA
+
+至于excilpes现在使用并不如IDEA方便
+
+注意：将jdk安装到C盘下，编译器可以安装在其他盘的目录下
+
+4.运行第一个java程序
+
+Java是一门半编译型、半解释型语言。先通过javac编译程序把源文件进行编译，编译后生成的.class文件是由字节码 组成的平台无关、面向JVM的文件。最后启动java虚拟机来运行.class文件，此时JVM会将字节码转换成平台能够理解 的形式来运行。
+JRE(Java Runtime Environment):Java运行时环境，包含了JVM，Java基础类库。是使用Java语言编写程序 运行的所需环境。
+JDK(Java Development Kit):Java开发工具包，提供给Java程序员使用，包含了JRE，同时还包含了编译器 javac与自带的调试工具Jconsole、jstack等。
+Java程序运行需要经过编译，运行两个阶段。
+编译：javac 命令
+
+运行：java 命令
+
