@@ -1,0 +1,42 @@
+理解数值提升
+int 和long混合运算
+
+int a = 10; 
+long b = 20; 
+int c = a + b;   // 编译出错, 提示将 long 转成 int 会丢失精度 
+long d = a + b;   // 编译通过. 
+1
+2
+3
+4
+结论: 当 int 和 long 混合运算的时候, int 会提升成 long, 得到的结果仍然是 long 类型, 需要使用 long 类型的变量来 接收结果. 如果非要用 int 来接收结果, 就需要使用强制类型转换.
+byte 和 byte 的运算
+
+byte a = 10;
+ byte b = 20; 
+ byte c = a + b;
+  System.out.println(c); 
+// 编译报错 Test.java:5: 错误: 不兼容的类型: 从int转换到byte可能会有损失             
+    byte c = a + b; 
+1
+2
+3
+4
+5
+6
+结论: byte 和 byte 都是相同类型, 但是出现编译报错. 原因是, 虽然 a 和 b 都是 byte, 但是计算 a + b 会先将 a 和 b 都 提升成 int, 再进行计算, 得到的结果也是 int, 这是赋给 c, 就会出现上述错误.
+由于计算机的 CPU 通常是按照 4 个字节为单位从内存中读写数据. 为了硬件上实现方便, 诸如 byte 和 short 这种低于 4 个字节的类型, 会先提升成 int, 再参与计算.
+正确的写法:
+
+byte a = 10; 
+byte b = 20; 
+byte c = (byte)(a + b);
+ System.out.println(c); 
+1
+2
+3
+4
+类型提升小结:
+
+不同类型的数据混合运算, 范围小的会提升成范围大的.
+对于 short, byte 这种比 4 个字节小的类型, 会先提升成 4 个字节的 int , 再运算.
