@@ -1,0 +1,334 @@
+方法的递归
+一个方法在执行过程中调用自身，就称为“递归”
+相当于数学上的“数学归纳法”，有一个起始条件，然后有一个递推公式
+例如求N的阶乘
+起始条件：N=1的时候，N!为1，这个起始条件相当于递归的结束条件。
+递归公式：求N!，直接不好求，可以把问题转换成N!=>N*(N-1)!
+(例如4！=4×3！）（3！=3×2！）…
+
+eg:递归求5！
+
+public class hello {
+    public static void main(String[] args) {
+        int n = 5;
+        int ret = digui(n);
+        System.out.println(ret);
+    }
+    public static int digui(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        return n * digui(n - 1);
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+给代码加上日志
+分析一下递归的执行过程
+
+public class hello{
+    public static void main(String[] args) {
+        int n=5;
+        int ret=factor(n);
+        System.out.println(ret);
+    }
+    public static int factor(int i){
+        System.out.println("函数开始 i="+i);
+        if(i==1){
+            System.out.println("函数结束i=1,ret=1");
+            return 1;
+        }
+        int ret= i*factor(i-1);
+        System.out.println("函数结束 i="+i+" "+"ret="+ ret);
+        return ret;
+    }
+}
+运行结果为
+函数开始 i=5
+函数开始 i=4
+函数开始 i=3
+函数开始 i=2
+函数开始 i=1
+函数结束i=1,ret=1
+函数结束 i=2 ret=2
+函数结束 i=3 ret=6
+函数结束 i=4 ret=24
+函数结束 i=5 ret=120
+120
+
+进程已结束,退出代码0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+
+//递归跟循环很类似，当程序执行到一个方法的时候，跳转到方法处执行，执行完成之后回到调用的位置。
+
+注意：递归必须有一个起始条件（这个起始条件相当于递归的结束条件）和一个递归公式
+
+递归练习
+按照顺序打印一个数字的每一位（1234 打印出1 2 3 4）
+
+public class Test {
+    public static void main(String[] args) {
+        int num = 1234;
+        printNum(num);
+    }
+    public static void printNum(int num) { //此函数不需要返回值
+//如果num是一个一位数，那么直接打印
+//如果num是一个超过两位数的数字，那就num/10递归。
+        if (num > 9) {
+//不是一位数
+            printNum(num / 10);
+        }
+        System.out.println(num % 10);
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+递归求1+2+3+4+5+6+7+8+9+10的和
+
+public class Test{
+    public static void main(String[] args) {
+        int num=10;
+        int ret =Sum(num);
+        System.out.println(ret);
+    }
+    //起始（结束）条件：num=1
+    //递归公式；ret=num+(num-1)
+    public static int Sum(int num){
+        if(num==1){
+            return 1;
+        }
+        return num+Sum(num-1);
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+//输入一个整数递归实现各项数字之和（123输出1+2+3）
+
+public class Test{
+    public static void main(String[] args) {
+        int num=3998;
+        int sum=Sum(num);
+        System.out.println(sum);
+    }
+    //起始（结束）条件：num等于个位数字 num=8
+    public static int Sum(int num){
+        if(num<10){
+            return num;
+        }
+        return num%10+Sum(num/10);
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+求斐波那契数列的第n项
+
+public class Test{
+    public static void main(String[] args) {
+        int n=5;
+        //n表示第几项
+        int ret=fib(n);
+        System.out.println(ret);
+    }
+    //起始（结束）条件：n=1||n=2,fib数列前两项都是1
+    //递归公式：n=(n-1)+(n-2)
+    public static int fib(int n){
+        if(n==1||n==2){
+            return 1;
+        }
+        return fib(n-1)+fib(n-2);
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+当求第40项的时候，程序运行速度很慢 原因是进行了大量的重复运算
+（简单改下程序来计算一下重复运算的次数）
+
+public class Test{
+    public static int count=0;
+    public static void main(String[] args) {
+        int n=40;
+        int num=fib(n);
+        System.out.println(num);
+        System.out.println(count);
+    }
+    //起始（结束）条件：n==1||n==2
+    //递归公式：n=(n-1)+(n-2)
+    public static int fib(int n){
+        if(n==1||n==2){
+            return 1;
+        }
+        if(n==3){
+            count++;
+        }
+        return fib(n-1)+fib(n-2);
+    }
+}
+运行结果：102334155
+	      39088169
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+//fib(3)大概四千万次重复运算,还有其余的数字也运算了很多次，运算量成指数级别增长
+//因此有的时候递归并不适合计算某些问题
+//求斐波那契数列的低N项 这可以使用循环来解决
+
+//有些问题用递归比较简单
+//有些问题用循环比较简单
+//当问题可以用递归和循环两种方法来解决的时候，优先考虑使用循环解决
+//因为方法的调用是有开销的
+//JVM栈里面存储方法之间的调用关系（JVM栈内空间有限）
+//动态规划与递归有很大联系 笔试中经常考
+
+可以使用循环的方式求斐波那契数列问题，避免出现亢余运算
+核心思路是避免重复运算
+可以直接使用两个变量（last2 和 last1）保存前两项，此时就可以写成一个循环版本的代码
+
+public class Test{
+    public static void main(String[] args) {
+        int n=40;
+        int ret=fib(n);
+        System.out.println(ret);
+    }
+    public static int fib(int n) {
+        int last2=1;//倒数第二项 第n-2项
+        int last1=1;//倒数第一项 第n-1项
+        int cur=0;//当前项
+        for(int i=3;i<=n;i++){
+            cur=last1+last2;
+            last2=last1;
+            last1=cur;
+        }
+        return cur;
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+针对斐波那契数列问题，优化不是说改成循环就有优化了，核心在于避免了重复运算，用额外的变量把上次的结果给存起来了，相当于用空间换时间
