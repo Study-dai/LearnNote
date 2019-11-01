@@ -1,0 +1,349 @@
+类和对象
+1、什么是类
+
+类相当于C语言中的一个高配结构体，类中既包含了数据又包含了动作（方法）
+类存在的意义就是客观事物进行一个抽象表示，与结构体相比，类的抽象能力更强（因为类中可以包含方法）
+
+2.、类的实例化
+
+用类类型创建对象的过程，称为类的实例化；
+在开发的时候：找对象 建对象 用对象 并维护对象之间的关系 这三点很重要
+
+类就是一类实例的统称，对象就是这一类具体化的一个实例
+要想使用这个类（类是自定制类型），还需要把这个类型的变量给创建出来，这个变量就称为
+“对象（object）/实例（instance）”
+基本语法：
+
+class<class-name>{
+	field;//成员属性
+	mothed;//成员方法
+	}
+	//实例化对象
+	<calss-name> <对象名称>=new <calss-name>();
+class 为定义类的关键字，class-name 为类的关键字 { } 中为类的主体。
+代码示例：
+
+calss Person{
+	public int age;//成员属性
+	public String name;
+	public String sex;
+public void eat(){//成员方法
+	System.out.println("吃饭！");
+	}
+public void sleep(){
+	System.out.println("睡觉！");
+	}
+}
+要注意：此处方法不带static关键字；后面细说
+
+3、同一个类可以创建多个实例
+类只是一个模型一样的东西，限定了类有哪些成员，定义出一个类并没有分配实际的内存空间来存储它。
+
+同一个类可以实例化出很多对象，实例化出的对象，就占用具体的内存空间，存储类的成员变量。
+
+类可以想象成图纸，模型，对象就是根据这个图纸，模型盖出的房子
+
+（java程序中，一般推荐一个 .java文件中就只放一个类。但是也不绝对）
+
+calss Person{
+	public int age;//成员属性
+	public String name;
+	public String sex;
+public void eat(){//成员方法
+	System.out.println("吃饭！");
+	}
+public void sleep(){
+	System.out.println("睡觉！");
+	}
+public static void main(String [] args){
+	Person.person=new Person();//通过new实例化对象
+	//new关键字用于创建一个对象的实例
+	person.eat();//成员方法的调用需要通过对象的引用调用
+	person.sleep();
+	person.age=18;
+	//对象可使用‘.’来访问类中的属性和方法
+	//产生对象，实例化对象
+	Person.person2=new Person();
+	Person.person3=new Person();
+	}
+}
+//执行结果：
+吃饭
+睡觉
+创建出对象之后，就可以给这个对象中的属性设置一定的值。
+同时也可以去调用对象的方法。
+设置值的时候也可以通过“.”来设置。
+通过“.”就可以来调用对象中的方法。
+并且方法内部是可以访问和使用到对象的属性的
+
+4、类的成员
+
+包含：字段/属性（field）、方法、代码块、内部类、接口等等；
+4.1字段/属性（field）
+在类中，方法之外定义的变量。
+用于描述一个类中包含哪些数据。
+
+calss Person{
+	public int age;//成员属性
+	public String name;
+	}
+class Test{
+public static void main(String [] args){
+Person person=new person;
+System.out.println(person.name);
+System.out.println(person.age);
+	}
+}
+//执行结果
+null
+0
+注意事项：
+使用‘.’访问对象的字段
+“访问”既包含读，也包含写
+对于一个字段如果没有设置初始值，那么会有一个默认的初始值
+默认值规则：
+对于各种数字类型, 默认值为 0.
+对于 boolean 类型, 默认值为 false.
+对于引用类型(String, Array, 以及自定制类), 默认值为 null.
+补充：java中的类型分成两个大类
+1.基本类型 int long short byte char boolean float double
+2.引用类型 数组 String 自定义的类
+java类中的属性如果没有初始化，也会有一个默认值（不是像C语言中整一个随机值）
+其中如果是引用类型 初始的默认值就是null
+如果是内置类型 初始默认值是0
+如果是boolean类型 初始默认值是false
+
+认识 null
+null 在 Java 中为 “空引用”, 表示一个无效的对象. 类似于 C 语言中的空指针. 如果对 null 进行 . 操作就会引发异常.
+
+class Person {
+    public String name; 
+     public int age;
+      }
+class Test {   
+ public static void main(String[] args) {  
+   Person person = new Person();  
+   System.out.println(person.name.length());   // 获取字符串长度
+       } 
+   }
+// 执行结果
+ Exception in thread "main"java.lang.NullPointerException 
+        at Test.main(Test.java:9)
+字段就地初始化（直接定义变量的时候就初始化赋值）
+
+很多时候我们不希望字段使用默认值, 而是需要我们显式设定初值. 可以这样写:
+
+ class Person {   
+ public String name = "张三";  
+  public int age = 18; 
+}
+class Test {    
+public static void main(String[] args) {
+       Person person = new Person();  
+      System.out.println(person.name);    
+      System.out.println(person.age);
+          } 
+ }
+// 执行结果 
+张三
+18
+4.2方法（method）
+就是我们曾经讲过的方法.
+用于描述一个对象的行为.
+
+class Person {
+    public int age = 18;
+    public String name = "张三"; 
+    public void show() { 
+   System.out.println("我叫" + name + ", 今年" + age + "岁");
+	}
+}
+class Test {
+    public static void main(String[] args) { 
+   Person person = new Person();   
+    person.show();
+  	} 
+ }
+// 执行结果
+ 我叫张三, 今年18岁 
+此处的 show 方法, 表示 Person 这个对象具有一个 “展示自我” 的行为.
+这样的 show 方法是和 person 实例相关联的. 如果创建了其他实例, 那么 show 的行为就会发生变化
+
+Person person2 = new Person(); 
+person2.name = "李四"; 
+person2.age = 20;
+person2.show()     
+// 执行结果
+我叫李四, 今年20岁 
+构造方法
+类中存在一个特殊的方法，构造方法
+在实例化对象的时候会被自动调用到的方法, 方法名字和类名相同, 用于对象的初始化.
+虽然我们前面已经能将属性就地初始化, 但是有些时候可能需要进行一些更复杂的初始化逻辑, 那么就可以使用构造方法.
+1.构造方法的名字和类名完全相同
+2.构造方法没有返回值
+3.构造方法new对象的同时被自动调用
+构造方法是可以传参数的
+
+IDEA自动生成构造方法快捷键
+alt +insert 键
+
+4.3static关键字
+static关键字
+可以修饰：成员变量 /属性 、方法、代码块、类
+a.修饰一个成员变量/属性
+和对象无关，和类相关 不论这个类存在多少个对象，静态成员变量只存在一份
+
+可以通过任何一个对象访问到这个成员变量 就算不创建对象，也可以用 类名. 的方式进行访问操作
+
+通过static修饰的变量 跟对象无关 对象只是能够访问 跟类相关 也可以叫做类属性
+
+Java静态属性和类相关, 和具体的实例无关. 换句话说, 同一个类的不同实例共用同一个静态属性.
+
+class TestDemo{
+     public int a;
+     public static int count;
+  } 
+ 
+public class Main{
+       public static void main(String[] args) {         
+       TestDemo t1 = new TestDemo();
+       t1.a++; 
+       TestDemo.count++;
+       System.out.println(t1.a);
+       System.out.println(TestDemo.count);  
+       System.out.println("============");       
+       TestDemo t2 = new TestDemo();    
+       t2.a++;
+       TestDemo.count++;   
+       System.out.println(t2.a);     
+       System.out.println(TestDemo.count);
+       }
+} 
+执行结果：
+1
+1
+===========
+1
+2
+内存分析：
+count 被static修饰，所有类共享，且不属于对象，访问方式为：类名.属性
+
+b.修饰一个方法 （让方法脱离对象 和类相关）
+如果在任何方法上应用 static 关键字，此方法称为静态方法。
+静态方法属于类，而不属于类的对象。
+可以直接调用静态方法，而无需创建类的实例。
+静态方法可以访问静态数据成员，并可以更改静态数据成员的值.
+
+class TestDemo{
+     public int a; 
+     public static int count; 
+     public static void change() {
+     count = 100; 
+     //a = 10; error  不可以访问非静态数据成员   
+         } 
+   } 
+ 
+public class Main{ 
+      public static void main(String[] args) { 
+              TestDemo.change()；
+              //无需创建实例对象 就可以调用  
+              System.out.println(TestDemo.count); 
+         } 
+   } 
+   执行结果：
+   100
+**注意：**修饰之后这个方法和类相关 和对象不相关。因此导致了两种情况
+
+静态方法不能直接使用非静态数据成员或调用非静态方法(非静态数据成员和方法都是和实例相关的).
+this和super两个关键字不能在静态上下文中使用(this 是当前实例的引用, super是当前实例父类实例的引用, 也 是和当前实例相关）
+
+因为this这个关键字表示的是当前对象 所以在static修饰过后的方法（静态方法）中不能使用this
+我们曾经写的方法为了简单, 都统一加上了 static.
+但实际上一个方法具体要不要带 static, 都需要是情形而定. main 方法为 static 方法
+
+//例如  xiaoli.eat(),而不能使用Person.eat();
+ public static void func(){
+        System.out.println(this.name+"这是一个静态方法");
+}
+4.3.修饰代码块（这里简单介绍 后面详细去说）
+代码块功能和构造方法很类似，也可以用来初始化
+相比之下构造方法可以传参数，并且支持重载（可以有多个版本）
+代码块中只能去做一些固定的初始化
+
+new对象的时候，先执行代码块中的内容，在执行构造方法，这个顺序和代码块的书写顺序无关
+static修饰代码块的时候 只能初始化静态成员
+比如//public static int num=10;可以初始化num;
+但是不能初始化和对象有关的变量
+比如 name age sex
+
+静态成员num（public static int num=10;）num在静态方法和普通方法中都能访问
+在静态代码块和普通代码块中也都能访问
+但是对于普通成员（name age sex）在普通方法中能访问 在静态方法中不能访问
+在静态代码块中不能访问 ，在普通代码块中不能访问
+执行特点
+两个特点：
+1：在执行过程中静态代码块会最先执行
+2：不管new多少个对象 静态代码块只执行一次
+3：就算不创建新的对象也可以去使用静态的代码块
+
+4.4修饰类
+
+后面细说
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+小结：
+观察下面的代码:分析内存布局
+
+class Person{
+    public int age;     //实例变量  存放在对象内
+    public String name; //实例变量
+    public String sex;  //实例变量
+    public static  int count;//类变量也叫静态变量，编译时已经产生，属于类本身，且只有一份。存放在方法区
+    public final int SIZE = 10;//被final修饰的叫常量，也属于对象。 被final修饰，后续不可更改
+    public static final int  COUNT= 99;//静态的常量，属于类本身，只有一份  被final修饰，后续不可更改
+    //实例成员函数
+    public void eat(){
+        int a = 10;//局部变量
+        System.out.println("eat()!");
+    }
+    //实例成员函数
+    public void sleep(){
+        System.out.println("sleep()!");
+    }
+    //静态成员函数
+    public static void staticTest(){
+        //不能访问非静态成员
+        // sex = "man"; error，sex是非静态成员
+        System.out.println("StaticTest()！");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        //产生对象 实例化对象
+        Person person = new Person();//person为对象的引用
+        System.out.println(person.age);//默认值为0
+        System.out.println(person.name);//默认值为null
+        // System.out.println(person.count);//会有警告!
+        //正确访问方式
+        System.out.println(Person.count);
+        System.out.println(Person.COUNT);
+        Person.staticTest();
+        //总结 ：所有被static修饰对的方法或者属性，全部不依赖于对象。
+        person.eat();
+        person.sleep();
+
+    }
+}
+//输出结果：
+        0
+        null
+        0
+        99
+        StaticTest()！
+        eat()!
+        sleep()!
+内存
+JVM内存分成若干个区域
+1、JVM栈 局部变量 对象的引用
+2、堆 就是用来存放new出来的对象 new Person（例如小花 小丽）
+3、方法区 Person类（里面有静态变量）所以静态变量保存在方法之中
+在这里插入图片描述
