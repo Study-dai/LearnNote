@@ -1,0 +1,345 @@
+数组练习
+1、数组转字符串
+import java.util.Arrays;
+//这是一个包，里面包含了一些数组操作的基本方法
+包的定义：若干个类放到同一个区域里构成了包（包和磁盘上的目录是对应的）
+
+public class Test{
+    public static void main(String[] args) {
+        int [] arr={1,2,3,4,5};
+        String newArr=Arrays.toString(arr);
+//Arrays.toString（arr）表示将数组转成字符串（借助Arrays包）
+        System.out.println(newArr);
+    }
+}
+不借用包，实现数组转成字符串
+
+class Test{
+    public static void main(String[] args) {
+        int [] arr={1,2,3,4,5,6,7,8};
+        System.out.println(toString(arr));
+//借助 toString 方法进行实现
+    }
+    public static String toString(int [] arr){
+        String ret ="[";
+        //先打印出"["
+        for(int i=0;i<arr.length;i++){
+            //借助String+=进行字符串拼接，每次循环拼接一个字符
+            ret+=arr[i];
+            //除了最后一个元素之外，其他所有元素后面都要加上","
+            if(i!=arr.length-1){
+                ret+=",";
+            }
+        }
+        ret+="]";//最后加上结尾的"]"
+        return ret;//返回 ret。
+    }
+}
+2、数组拷贝
+
+import java.util.Arrays;
+public class Test{
+    public static void main(String[] args) {
+        int [] arr={1,2,3,4,5};
+        int [] newarr=Arrays.copyOf(arr,arr.length);
+        System.out.println("arr："+Arrays.toString(arr));
+		//先输出arr进行对比
+        System.out.println("newarr:"+Arrays.toString(newarr));
+		//输出newarr
+        arr[0]=10;//改变arr[0] 的值进行对比
+        System.out.println("arr："+Arrays.toString(arr));
+        System.out.println("newarr:"+Arrays.toString(newarr));
+//发现此时newarr的值并没有改变
+//相比于newarr=arr；这样的赋值；copyOf是将数组进行了深拷贝，即又创建了一个新的数组对象；
+//拷贝原来的数组中所有元素到新的数组中，因此，修改原数组，不会影响到新数组。
+    }
+}
+//int [] newarr=Arrays.copyOf(arr,arr.length-2);//
+copyOf这个拷贝用法：
+int [] newarr=Arrays.copyOf(arr,arr.length);
+1.前面要有import.java.util.Arrays.这个包
+2.括号里面要有两个参数,第一个是要拷贝的数组的数组名，中间用逗号隔开，第二个是要拷贝的长度
+3.如果输入的长度小于原来数组的长度，就会只拷贝前几个
+4.如果输入的长度大于原来数组的长度，就会在空余的位置补上0；并不会出现异常。
+//创建的数组如果没有初始化，默认为全0的数组；
+实现一个自己版本的拷贝数组
+
+mport java.util.Arrays;
+class Test{
+    public static void main(String[] args) {
+        int[] arr={1,2,3,4};
+        int [] arr2=copy(arr);
+        System.out.println(Arrays.toString(arr2));
+    }
+    public static int [] copy(int [] arr){
+        int [] ret=new int [arr.length];
+        for(int i=0;i<arr.length;i++){
+            ret[i]=arr[i];
+        }
+        return ret;
+    }
+}
+求数组元素的平均值
+
+import java.util.Arrays;
+public class Test{
+    public static void main(String[] args) {
+      int [] arr={1,2,3,4};
+      double avg=average(arr);
+        System.out.println(avg);
+    }
+    public static double average(int [] arr){
+        int sum=0;
+        for(int x:arr){
+            sum+=x;
+        }
+        return (double)sum/(double)arr.length;
+    }
+}
+求数组元素的最大值
+
+import java.util.Arrays;
+public class Test{
+    public static void main(String[] args) {
+        int [] arr={1,2,3,4,5,6};
+        int maxa=max(arr);
+        System.out.println(maxa);
+    }
+    public static int max(int [] arr){
+        int max=arr[0];
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]>max){
+                max=arr[i];
+            }
+        }
+        return max;
+    }
+}
+查找数组中的指定元素（顺序查找）
+
+import java.util.Arrays;
+public class Test {
+    public static void main(String [] args) {
+        int[] arr = {1, 2, 3, 20,4, 5};
+        System.out.println(find(arr,20));
+    }
+    public static int find(int [] arr,int tofind){
+
+        for(int i=0;i<arr.length;i++){
+         if(arr[i]==tofind){
+             return i;
+         //找到返回数组下标
+         }
+        }
+        return -1;
+        //找不到返回数字-1；
+    }
+}
+查找数组中指定元素（二分查找）
+1：针对有序数组，可以使用更高效的二分查找的方法
+有序分为升序和降序
+以升序数组为例：二分查找的思路是先取出中间位置的元素，
+看要找的值，比中间元素大还是小，如果小，去左边如果打就去右边
+
+import java.util.Arrays;
+public class Test {
+    public static void main(String [] args) {
+       int [] arr={1,2,4,7,9,11,42,45,67,78,90,1223,5757};
+        System.out.println(find(arr,45));
+    }
+    public static int find(int [] arr,int tofind) {
+        //先找到最大值和最小值
+        int left=0;
+        int right=arr.length-1;
+        while(left<=right){
+            //左边一直小于右边
+            int mid=(left+right)/2;
+            if(tofind<arr[mid]){
+                right=mid-1;
+            }else if(tofind>arr[mid]){
+                left=mid+1;
+            }else{
+                return mid;
+            }
+        }
+        return -1;
+    }
+}
+感受一下二分查找的效率
+
+public class Test{
+    static int count=0;
+    public static void main(String [] args){
+        int [] arr=maxarrays();
+        int ret=find(arr,2);
+        System.out.println(ret);
+        System.out.println(count);
+    }
+//这个方法表示输出出从0到20000之间所有整数的数组
+    public static int [] maxarrays(){
+        int [] arr=new int [20000];
+        for(int i=0;i<20000;i++){
+            arr[i]=i;
+        }
+        return arr;
+    }
+    public static int  find(int [] arr,int tofind){
+        int left=0;
+        int right=arr.length-1;
+        while(left<=right){
+            count++;//表示查找的次数
+            int mid=(left+right)/2;
+            if(tofind<arr[mid]){
+                right=mid-1;
+            }else if(tofind>arr[mid]){
+                left=mid+1;
+            }else
+                return mid;
+        }
+        return -1;
+    }
+}
+检查数组的有序性
+给定一个数组，判断是否该数组是有序的（升序或者降序）
+
+public class Test{
+    public static void main(String [] args){
+        int [] arr={1,2,3,4,5,6};
+        System.out.println(isSorted(arr));
+    }
+    public static boolean isSorted(int [] arr){
+        for(int i=0;i<arr.length-1;i++){
+            if (arr[i] < arr[i+1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+数组排序（冒泡排序）
+给定一个数组，让数组升序（降序）
+依次比较两个相邻元素，看是否符合升序的要求，如果不符合，就交换两个元素
+
+import java.util.Arrays;
+public class Test{
+    public static void main(String [] args){
+        int [] arr={9,5,2,7};
+        maopao(arr);
+        System.out.println(Arrays.toString(arr));
+    }
+    public static void maopao(int [] arr){
+        //[0,bound)构成了一个前闭后开区间；表示已排序区间
+        //[bound,length)构成了一个前闭后开区间，表示待排序区间
+        //每循环一次，就找到一个合适的元素，以排序区间就多一个元素，待排序区间就少了一个元素；
+        for(int bound=0;bound<arr.length;bound++){
+            for(int cur=arr.length-1;cur>bound;cur--){
+//第二重循环，找到当前待排序区间中的最小值，并且放到合适的位置上去
+                if(arr[cur-1]>arr[cur]){
+ //前一个元素大于后一个元素，交换两个变量的值
+         //则这就是升序排列
+         //如果是后一个元素大于前一个元素（arr[cur]>arr[cur-1]
+         //这就是降序排列        
+                    int tmp=arr[cur-1];
+                    arr[cur-1]=arr[cur];
+                    arr[cur]=tmp;
+                }
+            }
+        }//end for
+    }//end maopao
+}
+执行结果：
+2
+5
+7
+9
+冒泡排序的性能效率较低，java中内置了更高效的排序算法Arrays.sort
+
+import java.util.Arrays;
+class Test {
+    public static void main(String[] args) {
+        int[] arr = {1, 8, 5, 4, 9};
+        Arrays.sort(arr);
+        System.out.println(Arrays.toString(arr));
+    }
+}
+如何把一个数组逆序
+思路：设定两个下标，分别指向第一个元素和最后一个元素，交换两个元素的位置
+然后让前一个下标自增，后一个下标自减
+
+import java.util.Arrays;
+class Test {
+    public static void main(String[] args) {
+        int[] arr = {1, 8, 5, 4, 9};
+        reverse(arr);
+        System.out.println(Arrays.toString(arr));
+    }
+    public static void reverse(int [] arr){
+        int left=0;
+        int right=arr.length-1;
+        while(left<right){
+            int tmp=arr[left];
+            arr[left]=arr[right];
+            arr[right]=tmp;
+            left++;
+            right--;
+        }
+    }
+}
+数组数字排列
+给定一个整形数组，将所有的偶数放在前半部分，将所有的基数放在后半部分
+思路：设定两个下标分别指向第一个元素和最后一个元素
+用前一个元素从左往右找到第一个奇数，用后一个下标从右往左找到第一个偶数，然后交换两个位置的元素
+依次循环就行
+
+import java.util.Arrays;
+class Test {
+    public static void main(String[] args) {
+        int[] arr = {1, 8, 5, 4, 9};
+        transfrom(arr);
+        System.out.println(Arrays.toString(arr));
+    }
+    public static void transfrom(int [] arr) {
+    int left=0;
+    int right=arr.length-1;
+    while(left<right){
+         while(left<right&&arr[left]%2==0){
+             left++;
+         }
+         while (left<right&&arr[right]%2!=0){
+             right--;
+         }
+         int tmp=arr[left];
+         arr[left]=arr[right];
+         arr[right]=tmp;
+     }
+    }
+}
+二维数组
+二维数组本质上也是一位数组，只不过数组每个元素又是一个数组
+基本语法
+
+数据类型 [ ] [ ] 数组名称=new 数据类型 [行数] [列数] {初始化数据}；
+代码示例
+
+import java.util.Arrays;
+public class Test{
+    public static void main(String [] args){
+        int [] [] arr={
+                {1,2,3,4},
+                {5,6,7,8},
+                {4,7,88,99,43,12}
+        };
+        for(int row=0;row<arr.length;row++){
+            for(int col=0;col<arr[row].length;col++){
+                System.out.printf("%d   ",arr[row][col]);
+            }
+            System.out.println("");
+        }
+    }
+}
+
+打印结果
+
+1   2   3   4   
+5   6   7   8   
+4   7   88   99   43   12   
