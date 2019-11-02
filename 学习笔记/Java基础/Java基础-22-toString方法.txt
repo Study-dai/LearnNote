@@ -1,0 +1,68 @@
+toString方法
+作用：将对象转换成字符串
+先看一段代码：
+
+public class Person {
+        private String name;
+        private int age;
+        public Person(String name,int age){
+            this.age=age;
+            this.name=name;
+        }
+        public void show(){
+            System.out.println("name:"+name+"age:"+age);
+        }
+    }
+    class Test{
+        public static void main(String[] args) {
+            Person person=new Person("学习代",18);
+            person.show();
+        //我们发现这里打印的是一个地址的哈希值
+            // 原因：调用的是object的toString方法
+            System.out.println(person);
+        }
+    }
+    //执行结果
+        name:学习代age:18
+        Person@1540e19d
+
+可以用toString这样的方法将对象自动转成字符串
+
+public class Person {
+        private String name;
+        private int age;
+        public Person(String name,int age){
+            this.age=age;
+            this.name=name;
+        }
+    public void show(){
+        System.out.println("name:"+name+"age:"+age);
+
+    }
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+    class Test{
+        public static void main(String[] args) {
+            Person person=new Person("学习代",18);
+            person.show();
+            System.out.println(person);
+        }
+    }
+//    执行结果：
+        name:学习代age:18
+        Person{name='学习代', age=18}
+
+注意：
+toString 方法会在 println 的时候被自动调用.
+将对象转成字符串这样的操作我们称为 序列化.
+toString 是 Object 类提供的方法, 我们自己创建的 Person 类默认继承自 Object 类, 可以重写 toString 方法实 现我们自己版本的转换字符串方法. (关于继承和重写这样的概念, 我们后面会重点介绍).
+@Override 在 Java 中称为 “注解”, 此处的 @Override 表示下面实现的 toString 方法是重写了父类的方法. 关于 注解后面的课程会详细介绍.
+IDEA快速生成Object的toString方法快捷键：alt+insert
+
+
