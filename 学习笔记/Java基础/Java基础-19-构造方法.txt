@@ -1,0 +1,56 @@
+构造方法
+1、基本语法
+构造方法是一种特殊的方法，使用关键字new实例化对象时会被自动调用，用于完成初始化操作.
+new执行过程（创建对象的过程）：
+
+1.为对象分配内存空间
+2.调用对象的构造方法
+
+语法规则：
+
+1.方法名称必须与类名称相同
+2.狗杂方法中没有返回值类型声明
+3.每一个类中一定至少存在一个构造方法（如果没有明确定义的话，则系统自动生成一个无参构造）
+
+注意：
+如果类中没有明确提供任何构造函数，那么编译器会默认生成一个不带有参数的构造函数。
+若类中定义了构造方法，则默认的无参构造将不再生成。
+狗杂方法也支持重载，规则和普通方法一致。
+
+代码示例：
+
+class Person{
+    private String name="学习代";
+    private int age=18;
+    private String sex;
+    //默认构造函数    构造对象
+    public Person(){
+        this.name = "caocao"; 
+        this.age = 10; 
+        this.sex = "男"; 
+    }
+    //带有三个参数的构造函数
+    public Person(String name,int age,String sex){
+        this.name=name;
+        this.age=age;
+        this.sex=sex;
+    }
+    public void show(){
+        System.out.println("name:"+name+"age:"+age+"sex:"+sex);
+    }
+}
+class Test{
+    public static void main(String[] args) {
+        Person p1=new Person();
+        //调用不带参数的构造函数  如果程序内由于提供会调用不带参数的构造函数
+        p1.show();
+        Person p2=new Person("学习代",80,"男");//调用带有三个参数的构造函数
+        p2.show();
+    }
+}
+//执行结果：
+name: caocao age:10 sex:男
+name:学习代  age:80 sex:男
+
+32
+**注意：**可以使用快捷键; Alt+insert 生成构造方法
