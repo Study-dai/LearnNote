@@ -1,0 +1,95 @@
+封装
+什么是封装？
+我们在写代码的时候经常涉及到两种角色：类的实现者和类的调用者
+封装的本质是让类的调用者不必太多的了解类的实现者是如何实现类的，只要知道如何使用就行了，这样就降低了类使用者的学习和使用成本，从而降低代码的复杂度
+
+1、private实现封装
+privete/public 私有的/共有的
+被 public 修饰的成员变量或者成员方法, 可以直接被类的调用者使用.
+被 private 修饰的成员变量或者成员方法, 不能被类的调用者使用.
+换句话说, 类的使用者根本不需要知道, 也不需要关注一个类都有哪些 private 的成员. 从而让类调用者以更低的 成本来使用类.
+代码示例：
+使用private实现封装，并提供给public方法使用
+
+class Person{
+    private String name="学习代";
+    private int age=18;
+    public void show(){
+        System.out.println("我叫"+name+",今年"+age+"岁");
+    }
+}
+class Test{
+    public static void main(String[] args) {
+        Person person=new Person();
+        person.show();
+    }
+}
+//执行结果：
+我叫学习代，今年18岁
+
+此时字段已经使用 private 来修饰. 类的调用者(main方法中)不能直接使用. 而需要借助 show 方法. 此时类的使 用者就不必了解 Person 类的实现细节.
+同时如果类的实现者修改了字段的名字, 类的调用者不需要做出任何修改(类的调用者根本访问不到 name, age 这样的字段).
+
+注意
+private 不光能修饰字段, 也能修饰方法
+通常情况下我们会把字段设为 private 属性, 但是方法是否需要设为 public, 就需要视具体情形而定. 一般我们希 望一个类只提供 “必要的” public 方法, 而不应该是把所有的方法都无脑设为 public。
+2、getter和setter方法
+当我们使用private来修饰字段的时候，就无法直接使用这个字段了
+例如：
+
+class Person{
+    private String name="学习代";
+    private int age=18;
+    public void show(){
+        System.out.println("我叫"+name+",今年"+age+"岁");
+    }
+}
+class Test{
+    public static void main(String[] args) {
+        Person person=new Person();
+        person.age=20;
+        person.show();
+    }
+}
+//编译出错
+est.java:13: 错误: age可以在Person中访问private  
+       person.age = 20;
+             ^
+
+此时如果要获取或者修改这个private属性，就需要使用getter和setter方法
+代码示例：
+
+class Person{
+    private String name="学习代";
+    private int age=18;
+    public void setName(String name){
+	this.name=name;
+	}
+	public String getName(){
+		return name;
+	}
+    public void show(){
+        System.out.println("我叫"+name+",今年"+age+"岁");
+    }
+}
+class Test{
+    public static void main(String[] args) {
+        Person person=new Person();
+        person.setName("学习代");
+        String name=person.getName();
+        System.out.println(name);
+        person.show();
+    }
+}
+//运行结果：
+学习代
+name:学习代 age：0
+
+注意事项
+getName 即为 getter 方法, 表示获取这个成员的值. setName 即为 setter 方法, 表示设置这个成员的值.
+当set方法的形参名字和类中的成员属性的名字一样的时候，如果不使用this, 相当于自赋值. this 表示当前实例的引用.
+不是所有的字段都一定要提供 setter / getter 方法, 而是要根据实际情况决定提供哪种方法.
+在 IDEA 中可以使用 alt + insert (或者 alt + F12) 快速生成 setter / getter 方法. 在 VSCode 中可以使用鼠标右键 菜单 -> 源代码操作 中自动生成 setter / getter 方法.
+
+字段 vs 属性
+我们通常将类的数据成员称为 “字段(ﬁeld)” , 如果该字段同时提供了 getter / setter 方法, 那么我们也可以将它 称为 “属性(property )”·
