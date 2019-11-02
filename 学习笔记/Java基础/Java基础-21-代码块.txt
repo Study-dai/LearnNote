@@ -1,0 +1,110 @@
+代码块
+字段初始化的方式有：
+1.就地初始化
+2.使用构造方法初始化
+3.使用代码块初始化
+1、认识代码块：
+使用 { } 定义的一段代码
+代码块分为：
+普通代码块
+构造代码块
+静态代码块
+同步代码块（多线程）
+2、普通代码块
+就是定义在方法中的代码块
+这种用法比较少见
+代码示例：
+
+public class Test{
+public static void main(String [] args){
+	{//直接使用{}定义，普通方法块
+	int x=10;
+	System.out.println("x1="+x);
+	}
+	int x=100;
+	System.out.println("x2="+X);
+	}
+}
+//执行结果：
+x1=10
+x2=100
+
+3、构造代码块
+定义在类中的代码块（不加修饰符）。也叫实例代码块。
+构造代码块一般用于初始化实例成员变量。
+
+ class Person{
+	private String name;
+	private int age;
+	private String sex;
+	public Person(){
+	System.out.println("执行构造函数中的代码!");
+}
+//实例代码块
+{
+	this.name = "学习代";
+	this.age = 18;
+	this.sex = "男"; 
+	System.out.println("执行实例代码块（构造代码块）中的代码!"); 
+}
+public void show(){
+	System.out.println(("name: "+name+" age: "+age+" sex: "+sex); 
+}
+public class Test{
+	public static void main(String [] args){
+	Person dai=new Person();
+	dai.show();
+	}
+//运行结果
+执行实例代码块中的代码!
+执行构造函数中的代码!
+name:学习代 age:18 sex:男
+
+执行代码后会发现：
+实例代码块中的代码会优先于构造函数执行。
+
+4、静态代码块
+使用static定义的代码块。一般用于初始化静态成员属性。
+
+class Person{
+	private String name;//实例成员变量
+	private int age;
+	private String sex;
+	private static int count=0;//静态成员变量  由类共享数据  count被static修饰，存在方法区
+	public Person(){
+	System.out.println("执行构造函数中的代码!");
+}
+//实例代码块
+{
+	this.name = "学习代";
+	this.age = 18;
+	this.sex = "男"; 
+	System.out.println("执行实例代码块（构造代码块）中的代码!"); 
+}
+//静态代码块
+static {
+count =10;//只能访问静态数据成员
+System.out.println("执行静态代码块中的代码！")
+}
+public void show(){
+	System.out.println(("name: "+name+" age: "+age+" sex: "+sex); 
+}
+public class Test{
+	public static void main(String [] args){
+	Person dai=new Person();
+	Person zhao=new Person();//静态代码块是否还会执行
+	}
+}
+//运行结果
+执行静态代码块中的代码！
+执行构造代码块（实例化代码块）中的代码！
+执行构造函数中的代码！
+
+静态代码块不管生成多少个对象，只会执行一次，而且是最先执行的。
+静态代码块执行完成后，实例代码块（构造代码块）执行，然后执行构造方法。
+总结：
+执行顺序（与书写顺序无关）
+静态代码块
+实例代码块
+构造函数
+静态代码块一般用于初始化静态成员属性
