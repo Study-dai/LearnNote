@@ -1,0 +1,26 @@
+匿名对象
+匿名对象表示没有名字的对象
+1.没有引用的对象称为匿名对象
+2.匿名对象只能在创建对象的时候使用
+3.如果一个对象值使用一次，后面不在使用，可以考虑使用匿名对象
+代码示例：
+
+public class Person {
+        private String name;
+        private int age;
+        public Person(String name,int age){
+            this.age=age;
+            this.name=name;
+        }
+    public void show(){
+        System.out.println("name:"+name+"age:"+age);
+    }
+}
+    class Test{
+        public static void main(String[] args) {
+            new Person("学习代",19).show();
+            //通过匿名对象调用方法
+        }
+    }
+    //执行结果
+    name:学习代 age:19
