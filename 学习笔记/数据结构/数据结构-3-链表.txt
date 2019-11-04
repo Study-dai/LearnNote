@@ -1,0 +1,699 @@
+链表
+一、简介
+相对于顺序表，链表更擅长插入和删除
+链表是一种物理存储结构上非连续的存储结构，数据元素的逻辑顺序是通过链表中的引用链接次序实现的
+
+链表对应的元素不是存储在里连续的内存空间上的，在每个元素上都额外用一个数据来保存说，下一个数据在哪（保存下一个元素的引用）
+创建链表需要一个LinkedList类和一个节点类（节点：既有数据，也有下一个元素的位置（引用））
+这个节点类（LinkNode）可以放在LinkedList类中
+一个.java文件可以包含多个类，但是只有一个类带public，带public的那个类必须与文件名相同
+java之中一个.java文件中其实可以存在多个class文件，但是这多个class中只有一个才允许是public。
+这个public 的class必须和文件名完全一致
+
+每个节点有数据和下一个元素的位置组成（data next）
+每个节点都有next能找到下一个节点，此时只要知道第一个节点，剩下整个链表的所有节点，就都全部找到了
+很多笔试题中，谈到链表，通常用一个头结点代替整个链表，这相当于修辞手法中的“借代”
+
+实际链表的结构非常多样，以下情况组合成八种链表
+单向 双向
+带头 不带头
+循环 非循环
+1、最常见的 不带头、单向、非循环链表
+2、不带头 、单向 、循环链表
+3、不带头 、双向、 非循环链表
+4、不带头、 双向、循环链表
+5、带头、 单向、非循环链表
+6、带头、 单向、循环链表
+7、带头、 双向、非循环链表
+8、带头、 双向、循环链表（这种链表工作中很常用）
+
+顺序表 在连续的内存空间上，更擅长随机访问
+链表 在不连续的内存空间上 更擅长插入和删除
+链表涉及到三种属性{是否带头结点 是否循环 单向还是双向}
+
+1、带不头结点，就看链表的第一个元素的数据是不是存有效数据
+带头结点的链表第一个元素存的是一个无意义的数据,这个结点也叫傀儡结点（dummyNude）是为了写代码的时候更方便
+
+2、带不带环的头结点
+看最后一个元素的指向
+如果最后一个结点的next指向一个null 就是不带循环的链表
+如果最后一个元素的next指向链表前面的任意一个结点 就是带循环的链表
+
+3、双向链表
+两个结点之间 前一个结点的next指向后一个结点 后一个结点的prev 指向前一个结点
+二、链表的实现
+首先链表的实现中需要三个类（三个.Java文件）可以把这三个类放到一个包中
+packageLinkedList包中
+TestLinkedList.java 测试类
+LinkedList.java 具体实现方法（头插，尾插等等）
+LinkedNode.java 节点类
+（由于节点类后面不需要更改，只是调用就行，所以先来实现节点类）
+
+package packageLinkedList;
+
+public class LinkedNode {
+    public int data=0;
+    public LinkedNode next=null;
+    public LinkedNode(){
+
+    }
+    public LinkedNode(int data) {
+        this.data = data;
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+LinkedLIst.java文件下
+1、头插法
+
+public class LinkedList {
+    //先创建链表的头结点
+    //有了头结点就可以把剩下的元素都获取到
+    private LinkedNode head=null;
+    public void addFirst(int data){
+        //1.先创建头结点
+        LinkedNode node=new LinkedNode(data);
+        //2.判断空链表
+        if(this.head==null){
+            this.head=node;
+            return;
+            //如果是空链表，使head引用指向新创建的结点
+            //此时链表中只有node这一个节点
+        }
+        //3.如果不是空链表,直接把这个结点放上去就行了
+        node.next=head;
+        this.head=node;
+        return;
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+2、创建打印的方法
+
+public void display() {
+        System.out.print("[");
+        for (LinkedNode node = this.head; node != null; node = node.next) {
+            System.out.print(node.data);
+            if (node.next != null) {
+                //如果不是最后一个元素就加上逗号，否则不加
+                System.out.print(",");
+            }
+        }
+        System.out.println("]");
+    }
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+3、创建求链表长度的方法
+
+public int size() {
+        int size=0;
+        for(LinkedNode cur=this.head;cur!=null;cur=cur.next){
+            size++;
+        }
+        return size;
+    }
+1
+2
+3
+4
+5
+6
+7
+4、创建尾插的方法
+
+public void addLast(int elem) {
+        //先创建要插入到尾部的结点
+        LinkedNode node = new LinkedNode(elem);
+        //如果是空链表，直接把这个结点放上去就行
+        if (this.head == null) {
+            this.head = node;
+            return;
+        }
+        //先定义一个cur来判断是不是最后一个结点
+        LinkedNode cur = this.head;
+        //非空情况，找到最后一个结点
+        //定义一个循环
+        while (cur.next != null) {
+            cur = cur.next;
+        }//这个循环结束之后,cur就是最后一个结点
+        //然后使cur指向要插入的那个结点
+        cur.next = node;
+    }
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+5、创建往任意位置插入，第一个数据结点为0号下标
+
+public void addIndex(int index, int elem) {
+        //先创建结点
+        LinkedNode node = new LinkedNode(elem);
+        //1、先对index进行一个合法性校验
+        // 这就需要知道链表的长度，得在外部创建一个size方法求长度
+        int len = size();
+        if (index < 0 || index > len) {
+            return;
+        }
+        if (index == 0) {
+            //2、处理头插的情况
+            addFirst(elem);
+            return;
+        }
+        if (index == len) {
+            //3、处理尾插的情况
+            addLast(elem);
+            return;
+        }
+        //4、处理插入到中间位置的元素
+        //比如说要插入到第二个和第三个结点的中间，index=3
+        //就要先找到index-1，也就是第二个结点
+        //prev这个引用就对应到index-1的位置
+        LinkedNode prev = getIndexPos(index-1);
+        //5、完成具体的插入
+        node.next=prev.next;
+        prev.next=node;
+        //这里的赋值是地址之间的赋值
+    }
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+6、创建求index前一个位置的元素的方法
+
+ private LinkedNode getIndexPos(int index){
+        //是否要判断index在有效范围之中(虽然前面判定了，但双重保险更安全）
+        LinkedNode cur = this.head;
+        for (int i = 0; i < index; i++) {
+            cur=cur.next;
+        }
+        return cur;
+    }
+1
+2
+3
+4
+5
+6
+7
+8
+7、查找关键字key是否在单链表中
+
+public boolean contains(int key){
+        //直接遍历链表，依次比较每个元素和key一样不一样就行
+        for(LinkedNode cur=this.head;cur!=null;cur=cur.next){
+            if(cur.data==key){
+                return true;
+            }
+        }
+        return false;
+    }
+1
+2
+3
+4
+5
+6
+7
+8
+9
+8、删除第一次出现关键字为key的结点
+
+//删除元素的核心是要找到要删除元素的前一个元素的位置
+    public void remove (int toRemove){
+        //1、先单独处理空链表的情况
+        if(head==null){
+            return;
+        }
+        //2、要考虑是否要删除的是头结点
+        if(head.data==toRemove){
+            this.head=this.head.next;
+            //跳过第一个结点，直接让head指向第二个结点（head.next)
+            //第一个结点没有指向就被C自动回收
+            return;
+        }
+        //3、删除中间结点，先找到要删除元素的前一个元素
+        LinkedNode prev=searchPrev(toRemove);
+        //借助这个searchPrev这个方法找到toRemove的前一个元素
+        // prev.next=prev.next.next;这个写法不容易理解
+        //引入一个新的 nodeToRemove结点使其在prev的后面
+        LinkedNode  nodeToRemove=prev.next;
+        prev.next=nodeToRemove.next;
+    }
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+9、创建找toRemove前一个元素位置的方法
+
+ private LinkedNode searchPrev(int toRemove){
+        //找到要删除元素的前一个位置
+        LinkedNode prev=this.head;
+        while(prev.next!=null){
+            if(prev.next.data==toRemove){
+                return prev;
+            }
+            prev=prev.next;
+        }
+        //返回null表示没找到
+        return null;
+    }
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+10、删除所有值为key的结点
+
+public void removeAllkey(int key){
+        if(head==null){
+            //判断是不是空链表，是就不用删除了直接返回
+            return;
+        }
+        //先不管头结点，先把后面的所有该删的结点都删除完
+        //最后处理头结点
+        LinkedNode prev=head;
+        LinkedNode cur=head.next;
+        while(cur!=null){
+            if(cur.data==key){
+                //cur对应的结点就应该删除
+                prev.next=cur.next;
+                cur=prev.next;
+            }else{
+                //cur对应的结点不用删除
+                //同时更新 prev和cur；
+                //保持prev永远是cur 的前一个元素
+                prev=cur;
+                cur=cur.next;
+                //删除头结点的情况
+                if(this.head.data==key){
+                    this.head=this.head.next;
+                }
+            }
+        }
+    }
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+11、清除链表操作
+
+public void Clear (){
+        this.head=null;
+        //后面的所有结点没有引用指向，就会被JVM自动回收
+    }
+1
+2
+3
+4
+TestLinkedList.Java文件下
+TestLinkedList.java文件
+
+public class TestLinkedList {
+    public static void main(String [] args){
+        TestAddFirst();
+        TestAddlast();
+        TestAddIndex();
+        TestContains();
+        TestRemove();
+        TestremoveallKey();
+        TestClear();
+    }
+    public static void TestAddFirst(){
+        System.out.println("测试头插");
+        LinkedList list=new LinkedList();
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
+        list.addFirst(4);
+        list.display();
+    }
+    public static void TestAddlast(){
+        System.out.println("测试尾插");
+        LinkedList list=new LinkedList();
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
+        list.addFirst(4);
+        list.addLast(8);
+        list.display();
+    }
+    public static void TestAddIndex(){
+        System.out.println("测试中间插入方法");
+        LinkedList list=new LinkedList();
+        list.addLast(1);
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.display();
+        //在2的后一个位置插入一个5
+        //测试的四种情况
+        //1、选择非法下标（-1）
+        //2、选择0号下标
+        //3、选择跟size一样长的下标
+        //4、选择0到size之间的下标
+        //每一种类别的测试数据中，挑一两个典型代表出来就行
+        list.addIndex(1,5);
+        list.display();
+    }
+    public static void TestContains(){
+        System.out.println("测试是否包含关键字key的方法");
+        LinkedList list=new LinkedList();
+        list.addLast(1);
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.display();
+        boolean ret=list.contains(3);
+        System.out.println("预期ret=true,实际是ret="+ret);
+    }
+    public static void TestRemove(){
+        System.out.println("测试删除链表中的元素");
+        //要测试的点：
+        //1.空链表
+        //2.删除头部结点
+        //3.删除普通结点
+        //4.删除一个不存在的元素
+        //5.删除重复元素
+        //6.删除尾部结点
+        LinkedList list=new LinkedList();
+        list.addLast(1);
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.display();
+        //删除3这个元素所在的结点
+        list.remove(3);
+        list.display();
+    }
+    public static void TestremoveallKey(){
+        System.out.println("测试删除所有值为key的结点");
+        LinkedList list=new LinkedList();
+        list.addLast(1);
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(3);
+        list.addLast(4);
+        list.display();
+        list.removeAllkey(3);
+        list.display();
+    }
+    public static void TestClear(){
+        System.out.println("测试清除链表的方法");
+        LinkedList list=new LinkedList();
+        list.addLast(1);
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.display();
+        list.Clear();
+        list.display();
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+测试结果：
+
+测试头插
+[4,3,2,1]
+
+测试尾插
+[4,3,2,1,8]
+
+测试中间插入方法
+[1,2,3,4]
+[1,5,2,3,4]
+
+测试是否包含关键字key的方法
+[1,2,3,4]
+预期ret=true,实际是ret=true
+
+测试删除链表中的元素
+[1,2,3,4]
+[1,2,4]
+
+测试删除所有值为key的结点
+[1,2,3,3,4]
+[1,2,4]
+
+测试清除链表的方法
+[1,2,3,4]
+[]
+
+Process finished with exit code 0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+链表的插入和删除的高效率是有前提的
+得先要知道要插入结点的 前一个位置，这时候就是O(1);
+如果不知道就是O(N);
+对于插入来说，必须得知道前一个位置，插入才高效
+对于删除来说不知道前一个位置，只知道当前位置，也是有办法让删除高效的（伪删除）
+————————————————
+版权声明：本文为CSDN博主「SUST.dai」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_45477141/article/details/102695467
