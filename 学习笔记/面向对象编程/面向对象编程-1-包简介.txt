@@ -1,0 +1,68 @@
+包
+包：（package）是组织类的一种方式。
+使用包的主要目的是保证类的唯一性。
+1、把很多类放大一起。
+2、把具有关联关系的类放到同一个目录中。
+3、把同名的类放到不同的包中，包就起到命名空间的作用，谈到某个名字，就可以通过包来具体区分是哪一个。
+导入包中的类
+java中已经提供了很多现成的类供我们使用. 例如：
+
+public class Test{
+	p[ublic static void main(String [] args){
+		java.util.Date date=new java.util.Date();
+		//得到一个毫秒级别的时间戳
+		System.out.println(date.getTime()); 
+		   } 
+} 
+
+可以使用 java.util.Date 这种方式引入 java.util 这个包中的 Date 类.
+
+但是这种写法比较麻烦一些, 可以使用 import 语句导入包.
+
+import java.util.Date;
+ public class Test {
+    public static void main(String[] args) {
+            Date date = new Date();
+           // 得到一个毫秒级别的时间戳 
+           System.out.println(date.getTime());
+         } 
+ }
+
+如果需要使用 java.util 中的其他类, 可以使用 import java.util.*
+
+import java.util.*;
+ public class Test {
+     public static void main(String[] args) {
+             Date date = new Date();  
+            // 得到一个毫秒级别的时间戳 
+             System.out.println(date.getTime()); 
+          } 
+ }
+
+但是我们更建议显式的指定要导入的类名. 否则还是容易出现冲突的情况.
+
+import java.util.*;
+import java.sql.*;
+  public class Test { 
+     public static void main(String[] args) {
+          // util 和 sql 中都存在一个 Date 这样的类, 此时就会出现歧义, 编译出错
+          Date date = new Date();
+         System.out.println(date.getTime());
+      }
+ }
+// 编译出错 
+Error:(5, 9) java: 对Date的引用不明确  
+java.sql 中的类 java.sql.Date 和 java.util 中的类 java.util.Date 都匹配 
+
+在这种情况下需要使用完整的类名
+
+import java.util.*;
+ import java.sql.*;
+  public class Test 
+  {    public static void main(String[] args) {
+          java.util.Date date = new java.util.Date(); 
+                 System.out.println(date.getTime()); 
+          }
+ }
+
+注意事项: import 和 C++ 的 #include 差别很大. C++ 必须 #include 来引入其他文件内容, 但是 Java 不需要. import 只是为了写代码的时候更方便. import 更类似于 C++ 的 namespace 和 using
