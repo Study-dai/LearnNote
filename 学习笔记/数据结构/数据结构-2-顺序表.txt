@@ -1,0 +1,584 @@
+顺序表
+数据结构包括
+顺序表，链表，二叉树，堆…=>都叫数据结构
+
+数据结构就是在帮我们组织大量的数据（变量），是为了堆数据进行操作（增删改查）
+我们讨论的数据结构都是以内存存储为主，当时广义的数据结构也适应在磁盘上存储；
+
+1、线性表
+线性表是n个具有相同特性的数据元素的有限序列，线性表是一种在实际中广泛使用的数据结构，常见的线性表：顺序表 链表 栈 队列 字符串…
+线性表在逻辑上是线性结构，也就是说是连续的一条直线，但是在物理结构上并不一定是连续的，线性表在物理上存储时，通常以数组和链式结构的形式存储。
+
+顺序表：所有的元素都在连续的空间上存储(随机访问更高效）例如数组
+链表：元素不必再连续的内存空间上存储（插入和删除更高效）
+
+内存有一个特点：就是支持随机访问
+
+2、顺序表
+顺序表是用一段物理地址连续的存储单元依次存储数据元素的线性结构，一般情况下采用数组存储，在数组上完成数组的增删改查。
+顺序表一般分为：
+静态顺序表：使用定长数组存储
+动态顺序表：使用动态开辟的数组存储
+静态顺序表适用于确定知道需要存多少数据的场景
+静态顺序表的定长数组导致N定大了，空间开多了浪费开少了不够用
+相比之下，动态顺序表更灵活，根据需要动态的分配空间大小
+
+测试小知识：
+一个项目的理想情况是，测试代码和正式代码之间的比例是1:1
+如对SeqList每个方法都单独写一段代码进行测试，这种方法叫"单元测试”
+所有一块测试叫“集成测试”
+
+接口实现
+1、打印顺序表
+
+import java.util.Arrays;
+public class SeqList {
+    //创建一个类，要先考虑这个类要支持哪些操作（分析需求）(增删改查）
+    //结合这些操作来考虑要把保存什么样的数据
+    private int [] arr=new int [10];
+//这个数组最大容量是10，初始情况下，这10个元素并不都是有效元素
+    private int size=0;
+    //size表示当前数组中有多少个有效元素
+    public void display(){
+        //System.out.println(Arrays.toString(arr));  这个方法比较简单
+        System.out.print("[");
+        for(int i=0;i<size;i++){
+            System.out.print(arr[i]);
+            if(i!=size-1){
+                System.out.print(", ");
+            }
+        }
+        System.out.println("]");
+    }
+
+
+public class Test {
+    public static void main(String [] args) {
+        SeqList  seqList=new SeqList();
+        seqList.display();
+//打印顺序表
+    }
+}
+//打印结果[0,0,0,0,0,0,0,0,0,0]
+
+2、在pos位置新增元素
+
+//在pos位置新增元素 ,pos表示把元素放到哪个下标上，data表示插入的元素是啥
+  public void add(int pos,int data){
+        //pos==size也允许插入,此时相当于尾插
+        if(pos<0||pos>size){
+            //pos位置无效
+            return;
+        }
+        //判定是否数组下标越界，超过10个数字的话
+        if(this.size>=this.arr.length){
+            //这表示当前容量不够了，需要扩容
+            //申请一块更大的内存空间，把原有数据拷贝过去
+            realloc();
+            //创建一个扩容的方法
+        }
+        if(pos==size){
+            //尾插情况，直接把新元素放到size下标的位置上
+            this.arr[pos]=data;
+            this.size++;
+            return;
+        }
+        //处理插入在中间位置的情况，进行搬运，把后面的元素依次往后挪
+        for(int i=size;i>pos;i--){
+            this.arr[i]=this.arr[i-1];
+        }
+        this.arr[pos]=data;
+        this.size++;
+     }
+     private void realloc (){
+        //由于这个方法的作用是为了给内存扩容，不需要给调用者使用
+         //所以将这个方法封装在SeqList类中
+         int [] newArr=new int [this.arr.length*2];
+         //扩容的策略很灵活，根据实际问题场景的特点
+         //来决定是具体是线性增长还是指数增长还是其他方式
+         //原则是扩容是比较大的开销。此处采用扩容两倍
+         //尽量根据实际场景，让扩容的次数尽量少
+         for(int i=0;i<this.arr.length;i++){
+             newArr[i]=this.arr[i];
+         }
+         this.arr=newArr;
+         //从这里之后旧的数组就不用了，开始使用新的数组
+         //旧数组会自动被垃圾回收机制回收，不需要释放内存
+     }
+
+Test类中的测试方法
+
+public class Test {
+    public static void main(String [] args) {
+        TestAdd();
+    }
+ public static void TestAdd() {
+        System.out.println("测试add方法：");
+        SeqList seqList = new SeqList();
+        seqList.add(0, 10);
+        seqList.add(1, 20);
+        seqList.add(2, 30);
+        seqList.display();
+        seqList.add(3, 10);
+        seqList.display();
+    }
+}
+//打印结果
+测试add方法：
+[10, 20, 30, 40, 50]
+[10, 20, 30, 10, 40, 50]
+
+3、判定是否包含某个元素
+
+public boolean contains(int toFind){
+        for(int i=0;i<this.size;i++){
+            if(this.arr[i]==toFind){
+                return  true;
+            }
+        }
+        return false;
+    }
+
+Test类中测试方法
+
+public class Test{
+public static void main（String [] args）{
+	TestContains;
+}
+public static void TestContains(){
+        System.out.println("测试contains方法：");
+        SeqList seqList = new SeqList();
+        seqList.add(0, 10);
+        seqList.add(1, 20);
+        seqList.add(2, 30);
+        seqList.display();
+        boolean ret=seqList.contains(20);
+        System.out.println(ret);
+    }
+}
+//执行结果
+测试contains方法：
+[10, 20, 30]
+true
+
+4、查找某个元素对应的位置
+
+public int search(int toFind){
+        for(int i=0;i<this.size;i++){
+            if(arr[i]==toFind){
+                return i;
+            }
+        }
+        return -1;//找不到返回-1；
+    }
+
+Test 类中
+
+public class Test {
+    public static void main(String [] args) {
+        TestSearch();
+    }
+ public static void TestSearch(){
+        System.out.println("测试search方法：");
+        SeqList seqList = new SeqList();
+        seqList.add(0, 10);
+        seqList.add(1, 20);
+        seqList.add(2, 30);
+        seqList.display();
+        int  sret=seqList.search(20);
+        System.out.println(sret);
+}
+//执行结果
+测试search方法：
+[10, 20, 30]
+1   //下标为1就是20；
+
+也可以借助上一个contains函数来实现
+
+public boolean contains (int toFind){
+  return this.search(toFind)!=-1;
+1
+2
+5、//获取pos位置的元素
+
+public int getPos(int pos){
+        return this.arr[pos];
+    }
+
+Test类中
+
+  public class Test {
+   public static void main(String [] args) {
+   TestGetpos();
+}
+public static void TestGetpos(){
+        System.out.println("测试getpos方法");
+        SeqList seqList=new SeqList();
+        seqList.add( 0,10);
+        seqList.add(1,20);
+        seqList.add(2,30);
+        seqList.display();
+        int getter= seqList.getPos(0);
+        System.out.println(getter);
+    }
+}
+//执行结果
+测试getpos方法：
+[10, 20, 30]
+ 10
+
+6、//给pos位置的元素设为 value
+
+ public int setPos(int pos,int value){
+        return this.arr[pos]=value;
+    }
+
+Test类中
+
+public class Test{
+public static void main(String [] args){
+public static void TestSetpos() {
+        System.out.println("测试setpos方法");
+        SeqList seqList = new SeqList();
+        seqList.add(0, 10);
+        seqList.add(1, 20);
+        seqList.add(2, 30);
+        seqList.display();
+ 
+        //System.out.println(setter);
+    }
+}
+//执行结果
+测试setpos方法：
+[10, 20, 9] 
+
+删除顺序表中的元素。可以按位置（下标）删除，也可以按值删除
+增加元素需要扩容，删除元素在大部分情况下不需要缩容；
+这里的扩容情况可能会称为一种隐性的内存泄漏
+7、按值删除
+//
+
+ public void remove(int toRemove){
+    //要按值删除，得先找到这个值对应的下标，还得转换成按位置删除
+    //这里可以直接调用上面的search方法来操作
+    int pos=search(toRemove);
+    if(pos==-1){//如果条件成立，使用search方法没找到，说明这个值不存在，不必删除
+        return;
+    }
+    if(pos==this.size-1){
+        //如果是最后一个元素，直接size--就行
+        this.size--;
+        return;
+    }
+    //如果删除的是一个普通位置的元素，需要进行搬运，
+     //前面往后面搬运 直到搬运到最后一个元素位置上
+    for(int i=pos;i<size-1;i++){//注意这里的边界值
+        this.arr[i]=this.arr[i+1];
+        }
+        this.size--;
+    }
+
+Test类中的方法
+
+public class Test{
+public static void main(String [] args){
+ TestRemove();
+}
+public static void TestRemove(){
+        System.out.println("测试remove方法");
+        SeqList seqList=new SeqList();
+        seqList.add( 0,10);
+        seqList.add(1,20);
+        seqList.add(2,30);
+        seqList.display();
+        seqList.remove(10);
+        System.out.println("预期值：[20,30]");
+        System.out.printf("实际值：");
+        seqList.display();
+    }
+}
+//执行结果：
+测试remove方法
+[10, 20, 30]
+预期值：[20,30]
+实际值：[20, 30]
+
+8、//获取顺序表的长度
+
+public int size(){
+    return size;
+}
+1
+2
+3
+Test类中的方法
+
+public classTest{
+public static void main(String []  args){
+Testsize();
+}
+public static void Testsize(){
+        System.out.println("测试size方法");
+        SeqList seqList=new SeqList();
+        seqList.add( 0,10);
+        seqList.add(1,20);
+        seqList.add(2,30);
+        seqList.display();
+        System.out.println(seqList.size());
+    }
+}
+//执行结果：
+测试size方法
+[10, 20, 30]
+
+9、//清空顺序表
+
+    public void claer(){
+        this.size=0;
+//让数组有效元素个数为0；就清空了；
+//可以利用这个方法缩容
+this.arr=new int [2];
+//这就可以把数组有效元素变成2个
+//
+    }
+
+Test类中方法
+
+public class Test{
+public static void main(String [] args){
+	Testclaer;
+}
+public static void Testclaer(){
+        System.out.println("测试clear方法");
+        SeqList seqList=new SeqList();
+        seqList.add( 0,10);
+        seqList.add(1,20);
+        seqList.add(2,30);
+        seqList.display();
+        seqList.claer();
+        seqList.display();
+    }
+}
+//执行结果
+测试clear方法
+[10, 20, 30]
+[]
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+顺序表小结：
+就是熟悉的数组
+顺序表擅长随机访问，给定位置，能够高效的获取/修改指定位置的值
+时间复杂度为O(1)
+顺序表按值查找，插入，删除他们的时间复杂度是O(N)
+对于尾插和尾删，时间复杂度为O(1)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+练习代码
+
+Test.java
+public class Test {
+    public static void main(String [] args) {
+        TestAdd();
+        TestContains();
+        TestSearch();
+        TestGetpos();
+        TestSetpos();
+        TestRemove();
+        Testsize();
+        Testclaer();
+    }
+    public static void TestAdd() {
+        System.out.println("测试add方法：");
+        SeqList seqList = new SeqList();
+        seqList.add(0, 10);
+        seqList.add(1, 20);
+        seqList.add(2, 30);
+        seqList.display();
+        seqList.add(3, 10);
+        seqList.display();
+    }
+    public static void TestContains(){
+        System.out.println("测试contains方法：");
+        SeqList seqList = new SeqList();
+        seqList.add(0, 10);
+        seqList.add(1, 20);
+        seqList.add(2, 30);
+        seqList.display();
+        boolean ret=seqList.contains(20);
+        System.out.println(ret);
+    }
+    public static void TestSearch(){
+        System.out.println("测试search方法：");
+        SeqList seqList = new SeqList();
+        seqList.add(0, 10);
+        seqList.add(1, 20);
+        seqList.add(2, 30);
+        seqList.display();
+        int  sret=seqList.search(20);
+        System.out.println(sret);
+    }
+    public static void TestGetpos(){
+        System.out.println("测试getpos方法");
+        SeqList seqList=new SeqList();
+        seqList.add( 0,10);
+        seqList.add(1,20);
+        seqList.add(2,30);
+        seqList.display();
+        int getter= seqList.getPos(0);
+        System.out.println(getter);
+    }
+    public static void TestSetpos() {
+        System.out.println("测试setpos方法");
+        SeqList seqList = new SeqList();
+        seqList.add(0, 10);
+        seqList.add(1, 20);
+        seqList.add(2, 30);
+        seqList.display();
+        seqList.display();
+        //System.out.println(setter);
+    }
+    public static void TestRemove(){
+        System.out.println("测试remove方法");
+        SeqList seqList=new SeqList();
+        seqList.add( 0,10);
+        seqList.add(1,20);
+        seqList.add(2,30);
+        seqList.display();
+        seqList.remove(10);
+        System.out.println("预期值：[20,30]");
+        System.out.printf("实际值：");
+        seqList.display();
+    }
+    public static void Testsize(){
+        System.out.println("测试size方法");
+        SeqList seqList=new SeqList();
+        seqList.add( 0,10);
+        seqList.add(1,20);
+        seqList.add(2,30);
+        seqList.display();
+        System.out.println(seqList.size());
+    }
+    public static void Testclaer(){
+        System.out.println("测试clear方法");
+        SeqList seqList=new SeqList();
+        seqList.add( 0,10);
+        seqList.add(1,20);
+        seqList.add(2,30);
+        seqList.display();
+        seqList.claer();
+        seqList.display();
+    }
+}
+
+
+Seqlist.java
+import java.util.Arrays;
+public class SeqList {
+    //创建一个类，要先考虑这个类要支持哪些操作（分析需求）(增删改查）
+    //结合这些操作来考虑要把保存什么样的数据
+    private int [] arr=new int [10];
+//这个数组最大容量是10，初始情况下，这10个元素并不都是有效元素
+    private int size=0;
+    //size表示当前数组中有多少个有效元素
+    public void display(){
+        //System.out.println(Arrays.toString(arr));
+        System.out.print("[");
+        for(int i=0;i<size;i++){
+            System.out.print(arr[i]);
+            if(i!=size-1){
+                System.out.print(", ");
+            }
+        }
+        System.out.println("]");
+    }
+    //在pos位置新增元素 ,pos表示把元素放到哪个下标上，data表示插入的元素是啥
+    public void add(int pos,int data){
+        //pos==size也允许插入,此时相当于尾插
+        if(pos<0||pos>size){
+            //pos位置无效
+            return;
+        }
+        //判定是否数组下标越界，超过10个数字的话
+        if(this.size>=this.arr.length){
+            //这表示当前容量不够了，需要扩容
+            //申请一块更大的内存空间，把原有数据拷贝过去
+            realloc();
+            //创建一个扩容的方法
+        }
+        if(pos==size){
+            //尾插情况，直接把新元素放到size下标的位置上
+            this.arr[pos]=data;
+            this.size++;
+            return;
+        }
+        //处理插入在中间位置的情况，进行搬运，把后面的元素依次往后挪
+        for(int i=size;i>pos;i--){
+            this.arr[i]=this.arr[i-1];
+        }
+        this.arr[pos]=data;
+        this.size++;
+     }
+     private void realloc (){
+        //由于这个方法的作用是为了给内存扩容，不需要给调用者使用
+         //所以将这个方法封装在SeqList类中
+         int [] newArr=new int [this.arr.length*2];
+         //扩容的策略很灵活，根据实际问题场景的特点
+         //来决定是具体是线性增长还是指数增长还是其他方式
+         //原则是扩容是比较大的开销。此处采用扩容两倍
+         //尽量根据实际场景，让扩容的次数尽量少
+         for(int i=0;i<this.arr.length;i++){
+             newArr[i]=this.arr[i];
+         }
+         this.arr=newArr;
+         //从这里之后旧的数组就不用了，开始使用新的数组
+         //旧数组会自动被垃圾回收机制回收，不需要释放内存
+     }
+     //判定是否包含某个元素
+    public boolean contains(int toFind){
+        return this.search(toFind)!=-1;
+    }
+    public int search(int toFind){
+        for(int i=0;i<this.size;i++){
+            if(arr[i]==toFind){
+                return i;
+            }
+        }
+        return -1;//找不到返回-1；
+    }
+    //获取pos位置的元素
+    public int getPos(int pos){
+        return this.arr[pos];
+    }
+    //给pos位置的元素设为 value
+    public int setPos(int pos,int value){
+        return this.arr[pos]=value;
+    }
+    //删除第一次出现的关键字key
+    public void remove(int toRemove){
+    //要按值删除，得先找到这个值对应的下标，还得转换成按位置删除
+    //这里可以直接调用上面的search方法来操作
+    int pos=search(toRemove);
+    if(pos==-1){//如果条件成立，使用search方法没找到，说明这个值不存在，不必删除
+        return;
+    }
+    if(pos==this.size-1){
+        //如果是最后一个元素，直接size--就行
+        this.size--;
+        return;
+    }
+    //如果删除的是一个普通位置的元素，需要进行搬运，
+     //前面往后面搬运 直到搬运到最后一个元素位置上
+    for(int i=pos;i<size-1;i++){//注意这里的边界值
+        this.arr[i]=this.arr[i+1];
+        }
+        this.size--;
+    }
+    //获取顺序表的长度
+    public int size(){
+        return size;
+    }
+    //清空顺序表
+    public void claer(){
+        this.size=0;
+    }
+
+}
