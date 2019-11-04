@@ -1,0 +1,86 @@
+静态导入
+使用import static 可以导入包中的静态方法和字段
+
+import static java.long.System.*
+public class Test{
+	public static void main(String [] args){
+	out.println("hello");	
+	}
+}
+
+s使用这种方式可以更方便的写一些代码：
+例如：
+
+import static java.long.Math.*;
+public calss Test{
+	public static void main(String [] args){
+	double x=20;
+	double y=30;
+	//静态导入的方式写起来更方便一些
+	//double result=Math.sqrt(Math.pow(x,2)+math.pow(y,2);
+	double resulsqrt(pow(x,2)+pow(y,2);
+	System.out.println(result);
+	}
+}
+将类放到包中
+基本规则：
+1、在文件的最上方加上一个 package 语句指定该代码在哪个包中.
+2、包名需要尽量指定成唯一的名字, 通常会用公司的域名的颠倒形式(例如 com.bit.demo1 ).
+3、包名要和代码路径相匹配. 例如创建 com.bit.demo1 的包, 那么会存在一个对应的路径 com/bit/demo1 来存 储代码.
+4、如果一个类没有 package 语句, 则该类被放到一个默认包中.
+操作步骤：
+
+在 IDEA 中先新建一个包: 右键 src -> 新建 -> 包
+2）2) 在弹出的对话框中输入包名, 例如 com.dai.demo1
+在包中创建类, 右键包名 -> 新建 -> 类, 然后输入类名即可.
+4）创建好之后磁盘上的目录结构就自动被IDEA创建好了
+5）同时在IDEA中打开包中的Test.java文件，在上发不发就会出现一个package语句
+package com.dai.demo1;
+public calss Test{
+}
+
+包的访问权限控制
+我们已经了解了类中的 public 和 private. private 中的成员只能被类的内部使用.
+如果某个成员不包含 public 和 private 关键字, 此时这个成员可以在包内部的其他类使用, 但是不能在包外部的类使 用. 下面的代码给了一个示例. Demo1 和 Demo2 是同一个包中, Test 是其他包中.
+Demo1.java
+
+package com.dai.demo;
+public calss Demmo1{
+int value=0;
+}
+
+Demo2.java
+
+package com.dai.demo;
+public class Demo2{
+	public static void main(String [] args){
+	Demo1 demo=new Demo1();
+	System.out.pringln(Demo.value);
+	}
+}
+//执行结果，能访问到value变量
+
+其他包中的Test
+Test.java
+
+import com.bit.demo.Demo1; 
+
+public class Test { 
+    public static void main(String[] args) {
+             Demo1 demo = new Demo1();
+             System.out.println(demo.value); 
+             } 
+    } 
+ 
+// 编译出错
+ Error:(6, 32) java: value在com.bit.demo.Demo1中不是公共的; 无法从外部程序包中对其进行访问 
+
+常见系统的包：
+
+java.lang:系统常用基础类(String、Object),此包从JDK1.1后自动导入。
+java.lang.re?ect:java 反射编程包;
+java.net:进行网络编程开发包。
+java.sql:进行数据库开发的支持包。
+java.util:是java提供的工具程序包。(集合类等) 非常重要
+java.io:I/O编程开发包
+
