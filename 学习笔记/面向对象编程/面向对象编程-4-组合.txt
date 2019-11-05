@@ -1,0 +1,246 @@
+继承
+代码中创建的类, 主要是为了抽象现实中的一些事物(包含属性和方法).
+有的时候客观事物之间就存在一些关联关系, 那么在表示成类和对象的时候也会存在一定的关联.
+例如, 设计一个类表示动物
+注意, 我们可以给每个类创建一个单独的 java 文件. 类名必须和 .java 文件名匹配(大小写敏感)
+
+package packageAnimal;
+public class Animal {
+    public String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+    public void eat(String food){
+        System.out.println(this.name+"正在吃"+food);
+    }
+}
+///////////////////////////////
+public class Cat {
+    public String name;
+
+    public Cat(String name) {
+        this.name = name;
+    }
+    public void eat(String food){
+        System.out.println(this.name+"正在吃"+food);
+    }
+}
+////////////////////////////////
+public class Bird {
+    public String name;
+
+    public Bird(String name) {
+        this.name = name;
+    }
+    public void fly(){
+        System.out.println(this.name+"正在飞");
+    }
+}
+
+这三个类都具备一个相同的 eat 方法, 而且行为是完全一样的.
+这三个类都具备一个相同的 name 属性, 而且意义是完全一样的.
+从逻辑上讲, Cat 和 Bird 都是一种 Animal (is - a 语义).
+
+此时我们就可以让 Cat 和 Bird 分别继承 Animal 类, 来达到代码重用的效果.
+
+此时, Animal 这样被继承的类, 我们称为 父类 , 基类 或 超类, 对于像 Cat 和 Bird 这样的类, 我们称为 子类, 派生类
+和现实中的儿子继承父亲的财产类似, 子类也会继承父类的字段和方法, 以达到代码重用的效果。
+
+语法规则：
+
+class 子类 extends 父类 { 
+     }
+
+使用 extends 指定父类.
+Java 中一个子类只能继承一个父类 (而C++/Python等语言支持多继承).
+子类会继承父类的所有 public 的字段和方法.
+对于父类的 private 的字段和方法, 子类中是无法访问的.
+子类的实例中, 也包含着父类的实例. 可以使用 super 关键字得到父类实例的引用。
+
+使用继承修改上面的代码：
+
+package packageAnimal;
+public class Animal {
+    public String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+    public void eat(String food){
+        System.out.println(this.name+"正在吃"+food);
+    }
+}
+///////////////////////////////
+public class Cat {
+    public Cat(String name) {
+       //使用super调用父类的构造方法
+        super(name);
+    }
+}
+////////////////////////////////
+public class Bird {
+    public Bird(String name) {
+      super（name）;
+    }
+    public void fly(){
+        System.out.println(this.name+"正在飞");
+    }
+}
+//////////////////////////
+Test.java
+package packageAnimal;
+public class Test {
+    public static void main(String[] args) {
+        Cat cat=new Cat("小黑");
+        cat.eat("猫粮");
+        Bird bird=new Bird("小鸟");
+        bird.fly();
+    }
+}
+////////////////////
+执行结果：
+小黑正在吃猫粮
+小鸟正在飞
+
+extends 英文原意指 “扩展”. 而我们所写的类的继承, 也可以理解成基于父类进行代码上的 “扩展”. 例如我们写的 Bird 类, 就是在 Animal 的基础上扩展出了 ?y 方法。
+
+如果我们把 name 改成 private, 那么此时子类就不能访问了。
+
+public class Animal {
+    private String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+    public void eat(String food){
+        System.out.println(this.name+"正在吃"+food);
+    }
+}
+public class Bird extends Animal{
+    //public String name;
+
+    public Bird(String name) {
+        super(name);
+    }
+    public void fly(){
+        System.out.println(this.name+"正在飞");
+    }
+}
+//////////////////
+//编译出错 
+Error:(9, 32) java: name可以在packageAnimal.Animal中访问private
+
+protected关键字
+刚才我们发现, 如果把字段设为 private, 子类不能访问. 但是设成 public, 又违背了我们 “封装” 的初衷.
+两全其美的办法就是 protected 关键字
+对于类的调用者来说, protected 修饰的字段和方法是不能访问的
+对于类的 子类 和 同一个包的其他类 来说, protected 修饰的字段和方法是可以访问的
+
+public class Animal {
+    protected String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+    public void eat(String food){
+        System.out.println(this.name+"正在吃"+food);
+    }
+}
+public class Bird extends Animal{
+    //public String name;
+
+    public Bird(String name) {
+        super(name);
+    }
+    public void fly(){
+        System.out.println(this.name+"正在飞");
+        //对于父类的protected字段，子类可以正确访问
+    }
+}
+///////////////
+public class Test {
+    public static void main(String[] args) {
+        Cat cat=new Cat("小黑");
+        cat.eat("猫粮");
+        Bird bird=new Bird("小鸟");
+        bird.fly();
+    }
+}
+//////////////
+执行结果：
+小黑正在吃猫粮
+小鸟正在飞
+
+小结: Java 中对于字段和方法共有四种访问权限
+private: 类内部能访问, 类外部不能访问
+默认(也叫包访问权限): 类内部能访问, 同一个包中的类可以访问, 其他类不能访问.
+protected: 类内部能访问, 子类和同一个包中的类可以访问, 其他类不能访问.
+public : 类内部和类的调用者都能访问.
+
+什么时候下用哪一种呢?
+
+我们希望类要尽量做到 “封装”, 即隐藏内部实现细节, 只暴露出 必要 的信息给类的调用者.
+
+因此我们在使用的时候应该尽可能的使用 比较严格 的访问权限. 例如如果一个方法能用 private, 就尽量不要用 public.
+
+另外, 还有一种 简单粗暴 的做法: 将所有的字段设为 private, 将所有的方法设为 public. 不过这种方式属于是对 访问权限的滥用, 还是更希望同学们能写代码的时候认真思考, 该类提供的字段方法到底给 “谁” 使用(是类内部 自己用, 还是类的调用者使用, 还是子类使用).
+
+更复杂的继承关系
+
+刚才我们的例子中, 只涉及到 Animal, Cat 和 Bird 三种类. 但是如果情况更复杂一些呢? 针对 Cat 这种情况, 我们可能还需要表示更多种类的猫~（比如中华田园猫 英国短毛猫 橘猫）
+
+// Animal.java 
+public Animal {     
+... 
+} 
+ 
+// Cat.java
+ public Cat extends Animal {
+      ... 
+      } 
+ 
+// ChineseGardenCat.java 
+public ChineseGardenCat extends Cat {
+     ... 
+     } 
+ 
+// OrangeCat.java 
+public Orange extends ChineseGardenCat { 
+    ...
+     }
+      ......
+
+如刚才这样的继承方式称为多层继承, 即子类还可以进一步的再派生出新的子类.
+
+时刻牢记, 我们写的类是现实事物的抽象. 而我们真正在公司中所遇到的项目往往业务比较复杂, 可能会涉及到一 系列复杂的概念, 都需要我们使用代码来表示, 所以我们真实项目中所写的类也会有很多. 类之间的关系也会更加 复杂.
+
+但是即使如此, 我们并不希望类之间的继承层次太复杂. 一般我们不希望出现超过三层的继承关系. 如果继承层 次太多, 就需要考虑对代码进行重构了. 如果想从语法上进行限制继承, 就可以使用 ?nal 关键字
+
+final关键字
+final修饰一个变量的时候，表示常量（这个变量不能被更改）
+
+final int a = 10; 
+a = 20;  // 编译出错 
+1
+2
+final修饰一个类的时候，表示被修饰的类不能被继承
+
+final public class Animal { 
+    ... 
+    } 
+ 
+public class Bird extends Animal {
+     ... 
+     }
+      
+
+// 编译出错 
+Error:(3, 27) java: 无法从最终com.dai.Animal进行继承
+
+?nal 关键字的功能是 限制 类被继承
+“限制” 这件事情意味着 “不灵活”. 在编程中, 灵活往往不见得是一件好事. 灵活可能意味着更容易出错.
+是用 ?nal 修饰的类被继承的时候, 就会编译报错, 此时就可以提示我们这样的继承是有悖这个类设计的初衷的.
+
+平常使用的Sting字符串类，就是final修饰的，不能被继承
+
