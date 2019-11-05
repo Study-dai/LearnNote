@@ -1,0 +1,75 @@
+向下转型
+向上转型是子类的对象转成父类的对象，向下转型就是父类的对象转成子类的对象，相对于向上转型，向下转型不常用
+
+package packageAnimal;
+public class Test {
+    public static void main(String[] args) {
+        Animal animal=new Bird("园园");
+        animal.eat("谷子");
+    }
+}
+//执行结果：
+园园正在吃谷子
+public class Test {
+    public static void main(String[] args) {
+        Animal animal=new Bird("园园");
+         animal.fly();
+        //编译出错，因为上面是子类的实例调用父类中的方法，
+        // 但是父类中没有fly方法。所以就会编译出错。
+    }
+}
+//执行结果
+ Error:(8, 9) java: 找不到符号
+  符号:   变量 animal
+  位置: 类 packageAnimal.Test
+
+注意事项：
+编译过程中，animal的类型是Animal，此时编译器只知道这个类中有一个eat方法，没有fly方法。
+虽然animal实际引用的是一个Bird对象，但是编译器是以animal的类型来查看有哪些方法的。
+
+对于Animal animal=new Bird(“园园”);这样的代码，
+编译器先检查有哪些方法的存在，看的是Animal这个类型
+执行时究竟执行父类的方法还是子类的方法，看的是Bird的类型。
+
+那么想实现刚才的效果，就需要向下转型：
+
+//（Bird）表示强制转换
+public class Test {
+    public static void main(String[] args) {
+		Animal animal=new Bird("园园");
+        animal.eat("谷子");
+        ((Bird) animal).fly();
+        }
+  }
+1
+
+但是这样的向下转型有时候会出错
+
+public class Test {
+    public static void main(String[] args) {
+        Animal animal=new Cat("小猫");
+        animal.eat("猫粮");
+        ((Bird) animal).fly();
+    }
+}
+//执行结果
+Exception in thread "main" java.lang.ClassCastException: packageAnimal.Cat cannot be cast to packageAnimal.Birdat packageAnimal.Test.main(Test.java:6)
+
+这就是逻辑上的错误了，animal本质上引用的是一个Cat对象，不能转成Bird对象，运行时抛出异常。
+
+为了更正确的向下转型，可以判断一下animal本质上是不是一个Bird实例，再来转换
+
+public class Test {
+    public static void main(String[] args) {
+        
+        Animal animal=new Cat("小猫");
+        if(animal instanceof Bird){
+            Bird bird=(Bird)animal;
+            bird.fly();
+        }
+}
+//执行结果：
+Process finished with exit code 0
+//无输出，说明cat不是Bird的实例，不能向下转型
+
+instanceof可以判断一个引用是否是某个类的实例，如果是，则返回true，不是则返回false，这样向下转型就比较安全了。
