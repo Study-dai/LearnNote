@@ -1,0 +1,312 @@
+多态
+向上转型
+
+Bird  bird=new Bird （“小鸟”）；
+//这个代码可以写成这样：
+Bird bird =new Bird("小鸟")；
+Animal  bird2=bird;
+//或者写成下面的形式
+Animal bied2=new Bird("小鸟")；
+
+此时bird2是一个父类（Animal）的引用，指向一个子类（Bird）的实例。这种写法称为向上转型。
+
+为啥叫 “向上转型”?
+在面向对象程序设计中, 针对一些复杂的场景(很多类, 很复杂的继承关系), 程序猿会画一种 UML 图的方式来表 示类之间的关系. 此时父类通常画在子类的上方. 所以我们就称为 “向上转型” , 表示往父类的方向转.
+
+向上转型发生的时机：
+直接赋值
+方法传参
+方法返回
+
+方法传参
+
+public class Test{
+	public static void main(String [] name){
+	Bird bird =new Bird("小鸟"）;
+	feed(bird);
+}
+public static void feed(Animal animal){
+	animal.eat("谷子");
+	}
+}
+//此时形参animal的类型是Animal（基类)，实际上对应到Bird（父类）的实例
+
+方法返回
+
+public class Test{
+	public static void main(String [] args){
+	Animal animal =FindMyAnimal();
+	}
+	public static Animal FindMyAnimal(){
+	Bird bird =new Bird("小鸟");
+	return bird;
+	}
+}
+//此时方法findMyAnimal返回的 是一个Animal类型的引用，但是实际上对应到Bird的实例。
+
+动态绑定
+当子类和父类中出现同名方法的时候，再去调用会出现啥情况？？
+
+package packageAnimal;
+public class Animal {
+    protected String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+    public void eat(String food){
+    	System.out.println("我是一只小动物"）;
+        System.out.println(this.name+"正在吃"+food);
+    }
+}
+//Bird.java
+public class Bird extends Animal{
+	public Bird(String name){
+	super(name);
+	}
+	public void eat(String food){
+	System.out.println("我是一只小鸟");
+	System.out.println(this.name+"正在吃"+food);
+	}va
+}
+//Test.java
+public class Test{
+	public static void main(String [] args){
+	Animal animal1=new Animal("小鸟");
+	animal1.eat("谷子");
+	Animal animal=new Bird("小鸟蛋");
+	animal2.eat("谷子");
+	}
+}
+//执行结果
+我是一只小动物
+小鸟正在吃谷子
+我是一只小鸟
+小鸟蛋正在吃谷子
+
+此时发现：
+animal1和animal2虽然都是Animal类型的引用，但是animal1执行Animal类型的实例，animal2指向bird类型的实例。
+针对animal1和animal2分别调用eat方法，发现animal1.eat()实际调用父类的方法，二animal2.eat（）实际调用了子类的方法。
+
+因此，在java中，调用某个类的方法，究竟执行了那段代码（是父类方法的代码还是子类的代码），要看究竟这个引用指向的是父类对象还是子类对象
+指向子类的对象就调用子类中的方法
+指向父类的对象就调用父类中的方法
+
+这个过程是程序运行时决定的而不是编译期，因此称为 动态绑定。
+
+方法重写
+针对刚才的eat方法来说：
+
+子类实现父类的同名方法，并且参数的类型和个数完全相同，这种情况称为重写/覆写/覆盖
+关于重写的注意事项：
+1、重写和重载完全不一样，不要混淆
+2、普通方法可以重写，static修饰的方法不能重写
+3、重写中子类的访问权限不能低于父类的访问权限
+
+方法权限示例：
+
+//Animal.java
+public calss Animal{
+	public void eat (String food){
+	......
+	}
+}
+//Bird.java
+public class Bird extends Animal{
+//将子类的 eat改成 private
+private void eat(String food){
+	......
+	}
+}
+//编译出错
+Error:(8, 10) java: com.bit.Bird中的eat(java.lang.String)无法覆盖com.bit.Animal中的 eat(java.lang.String) 
+  正在尝试分配更低的访问权限; 以前为public
+
+另外，针对重写的方法，可以使用@Override注解来显示指定
+
+//Bird.java
+	public class Bird extends Animal{
+@Override
+private void eat(String food){
+.....
+	}
+}
+
+有了这个注解能帮我们进行一些合法性校验. 例如不小心将方法名字拼写错了 (比如写成 aet), 那么此时编译器就会发 现父类中没有 aet 方法, 就会编译报错, 提示无法构成重写.
+推荐在代码中进行重写方法时显式加上 @Override 注解.
+
+重写和重载的区别
+重载的规则是：方法名称相同，参数类型或者参数个数不同。
+重写的规则是：方法名称相同，参数个数和类型也完全相同。（子类实现父类的同名方法）
+普通方法可以重写，static修饰的方法不能重写
+重写中子类的访问权限不能低于父类的访问权限
+
+多态就体现在三个方面上：
+1、向上转型
+2、动态绑定
+3、方法重写
+
+代码示例：打印多种形状
+用多态先来设计一个程序
+可以写一些只关注父类的代码，就能够同时兼容各种子类的情况
+新建一个packagePloypeptide包
+里面放如下类和代码
+
+ //父类
+ package packagePolypeptide;
+public class Shape {
+    public void show(){
+        //先定义一个函数，什么也不实现
+    }
+}
+//子类1
+package packagePolypeptide;
+
+public class Cycle extends Shape{
+    @Override
+    public void show() {
+        System.out.println("○");
+    }
+}
+//○□?
+//子类2
+package packagePolypeptide;
+
+public class Rect extends Shape{
+    @Override
+    public void show() {
+        System.out.println("□");
+    }
+}
+//子类3
+package packagePolypeptide;
+
+public class Flower extends Shape{
+    @Override
+    public void show() {
+        System.out.println("?");
+    }
+}
+//Test测试类
+package packagePolypeptide;
+
+public class Test {
+    public static void main(String[] args) {
+        Shape s1=new Flower();
+        Shape s2=new Cycle();
+        Shape s3=new Rect();
+        drawMap(s1);
+        drawMap(s2);
+        drawMap(s3);
+    }
+    //打印单个图形
+    public static void drawMap(Shape shape){
+        shape.show();
+    }
+}
+/*打印结果
+* ?
+* ○
+* □
+*/
+
+这个代码分为类的实现者（父类和子类）和调用者（Test）
+当类调用者在编写drawMap这个方法的时候，参数类型为Shape（父类），此时该方法内部并不知道，也不关注当前的shape引用指向的是哪个类型（哪个子类）的实例，此时shape这个引用调用draw方法可能会有多种不同的表现（这个表现和shape对应的 实例相关），这种行为就是多态。
+
+多态的真正意义：
+就是一个引用能够表现出多种不同的形态
+
+就比如shape.show()这个引用，引用的是啥，要看上面函数具体说明的是哪个对象，才能调用对应的方法。
+
+多态的好处是啥?
+1)类调用者对类的使用成本进一步降低
+封装是让类的调用者不必知道类的具体实现细节
+多态能让类的调用者连这个类的类型是什么都不必知道，只需要知道这个对象具有什么方法就行。
+因此，多态可以理解成是封装的更近一步，让类的调用者对类的使用成本进一步降低
+
+2）能够降低代码的“圈复杂度” 避免使用大量的 if-else 语句
+比如说要打印的不是一个形状，打印多个形状，多个形状就不基于多态
+代码：
+
+package packagePolypeptide;
+
+public class main {
+    public static void main(String[] args) {
+        Shape s1=new Flower();
+        Shape s2=new Cycle();
+        Shape s3=new Rect();
+        drawShapes();
+    }
+    public static void drawShapes(){
+        Rect rect=new Rect();
+        Cycle cycle=new Cycle();
+        Flower flower=new Flower();
+        String [] shapes={
+                "cycle",
+                "rect",
+                "cycle",
+                "rect",
+                "flower"
+        };
+        for(String shape:shapes){
+            if(shape.equals("cycle")){
+                cycle.show();
+            }else if(shape.equals("rect")){
+                rect.show();
+            }else if(shape.equals("flower")){
+                flower.show();
+            }
+        }
+    }
+}
+
+如果使用多态
+创建一个 shape对象的数组
+
+package packagePolypeptide;
+//如果使用多态，不用写很多的if-else语句
+//代码更简单
+public class SZ {
+    public static void main(String[] args) {
+        Shape s1=new Flower();
+        Shape s2=new Cycle();
+        Shape s3=new Rect();
+        drawShapes();
+    }
+    public static void drawShapes(){
+        //创建一个数组
+        Shape [] shapes= {
+                new Cycle(),
+                new Rect(),
+                new Cycle(),
+                new Rect(),
+                new Flower()
+        };
+        for(Shape shape:shapes){
+            shape.show();
+        }
+    }
+}
+
+(圈复杂度）
+描述一段代码的复杂程度，可以理解为循环语句和条件语句出现的次数，一般不要超过10；
+降低圈复杂度的方法
+1、拆分函数
+2、使用多态
+3、使用转移表
+
+3）、使用多态可以使代码的可扩展能力变强
+如果要新增一种新的形状，使用多态代码改动成本也比较低
+
+package packagePolypeptide;
+
+public class Triange extends Shape{
+    @Override
+    public void show() {
+        System.out.println("△");
+    }
+}
+
+对于类的调用者Test来说，只要创建一个新的类的实例就可以了，改动成本很低
+而对于不使用多态的情况，就要把drawShapes中的if-else进行修改，成本很高
+
