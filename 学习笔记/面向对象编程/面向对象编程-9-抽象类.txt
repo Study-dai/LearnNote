@@ -1,0 +1,78 @@
+抽象类
+语法规则：
+在打印图形的例子中，发现，Shape中的draw方法并没有什么实际工作，主要的绘制图形都是由Shape的各种子类的draw方法来完成，像这种没有实际工作的方法，我们可以把它设计成一个抽象方法（abstract methd）,包含抽象方法的类我们称为抽象类（abstract calss）.
+
+abstract class Shape{
+	abstract public void draw();
+	}
+1
+2
+3
+在draw方法前面加上abstract关键字，表示这是一个抽象方法，同时抽象方法没有方法体（没有{ }，不能执行具体的代码）。
+对于包含抽象方法的类，必须加上abstract关键字表示这是一个抽象类。
+
+注意事项：
+1、抽象类不能直接实例化
+
+public abstract class Shape {
+    Shape sha =new Shape()；
+}
+Error:(3, 16) java: packagePolypeptide.Shape是抽象的; 无法实例化
+1
+2
+3
+4
+2、抽象方法不能是private的
+
+public abstract class Shape {
+    //Shape sha =new Shape();
+    private void show(){
+        //先定义一个函数，什么也不实现
+    }
+}
+//执行结果：
+java：非法的修饰符组合，abstract和private
+1
+2
+3
+4
+5
+6
+7
+8
+因为被private修饰之后，就只能在当前类使用，而抽象方法是要被其他类的实例化对象调用的，所以不能是private。
+3、抽象类中可以包含其他的非抽象方法，也可以包含字段，这个非抽象方法和普通方法的规则都是一样的，可以被重写，也可以被子类调用。
+
+//父类
+abstract public  class Shape {
+    abstract public void draw();
+    //抽象方法不能有代码主体，就是后面不能加"{}"大括号
+        void func(){
+            System.out.println("func");
+    }
+}
+//子类
+public class Rect extends Shape{
+    @Override
+    public void draw() {
+        System.out.println("□");
+    }
+}
+//测试类
+public class Test {
+    public static void main(String[] args) {
+        Shape shape=new Rect();
+        shape.func();
+    }
+}
+//执行结果
+//func
+
+抽象类的作用
+抽象类存在的最大意义就是为了被继承
+抽象类本身不能被实例化，要想使用，只能创建该抽象类的子类，然后让子类重写抽象类中的抽象方法。
+但是普通的类也可以被继承，普通方法也可以被重写，为啥要用抽象类和抽象方法?
+因为使用抽象类相当于多了以便编译器校验
+使用抽象类的时候：
+实际工作不应该由父类完成，而是由子类完成，那么此时如果不小心误用成父类，使用普通类编译器是不会报错的，但是父类是抽象类，就会在实例化的时候提示错误，尽早发现问题。
+很多语法存在的意义是为了预防出错，让我们尽早发现问题。
