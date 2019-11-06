@@ -1,0 +1,29 @@
+super关键字
+代码中经常用到重写机制，调用到的是子类的方法，如果需要在子类内部调用父类的方法，可以使用super关键字
+super表示获取到父类实例的引用，涉及到两种常见用法。
+1）使用super来调用父类的构造器
+
+public Bird （string name）{
+	super(name);
+}
+
+2)使用super调用父类的普通方法
+
+public class Bird extends Animal{
+	public Bird (String  name){
+	 	super(name);
+	 }
+	 @Override
+    public void eat(String food){
+		//修改代码，让子类调用父类的方法，而不是调用自己本身的eat方法
+        super.eat("饭");
+        System.out.println("我是一只鸟");
+        System.out.println(this.name+"正在吃"+food);
+    }
+}
+
+在这个代码中，如果在子类的eat方法中直接调用eat（不加super），name此时就是子类嗲用自己的eat犯法，就成了递归了，加上super才是调用父类的eat方法。
+
+super和this的区别
+super指的是子类调用父类的方法，
+this关键字指的是当前对象的引用。
