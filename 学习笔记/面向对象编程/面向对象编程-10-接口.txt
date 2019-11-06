@@ -1,0 +1,239 @@
+接口
+接口是抽象类的更进一步
+抽象类中还可以包含非抽象方法和字段
+而接口中包含的方法都是抽象方法，字段只能包含静态常量。
+语法规则：
+在打印图形的代码中，父类Shape并没有包含别的非抽象方法，也可以设计成一个接口
+
+//接口Ishape
+public  interface IShape{
+	void draw();
+}
+//Cycle
+class Cycle implements Ishape{
+     @Override
+     public void draw() {
+         System.out.println("○");
+     }
+ }
+ //Rest
+ public class Rect implements Ishape{
+    @Override
+    public void draw() {
+        System.out.println("□");
+    }
+}
+//Test测试类
+public class Test {
+    public static void main(String[] args) {
+        Ishape shape=new Rect();
+        shape.draw();
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+使用interface定义一个接口
+接口中的方法一定是抽象方法，因此可以省略abstract
+接口中的方法一定是public 因此也可以省略public
+Cycle使用implements继承接口，此时表达的含义不在是"扩展"，而是"实现"
+在调用的时候同样可以创建一个接口的引用，对应到一个子类的实例上
+接口不能被实例化
+扩展（extends）和实现（implements）
+扩展指的是当前已经有一定的功能了，进一步扩展功能（意思就是父类中有方法或者属性，子类中使用父类的方法或者属性）
+实现指的是当前啥都没有，需要从头来构造（意思就是父类中啥都没有，需要子类去实现功能）
+
+接口中只能包含抽象方法，对于字段来说，接口中只能包含静态常量（final static）
+
+interface Ishape{
+	void draw();
+	public staitc final int num=10;
+}
+
+其中的public 、static、final可以省略，省略之后的num仍然表示public静态常量。
+提示：
+1、我们创建接口的时候，接口名称一般以大写I开头
+2、接口命令一般使用“形容词”词性的单词
+3、阿里编码规范中约定，接口中的防范和属性不加任何修饰符号，保持代码简洁性。
+
+完整格式
+
+interface IMessage{
+	public  static  final MSG="我爱学习"；
+	public abstract void print（）；
+}
+
+简化格式
+
+interface IMessage{
+		 MSG="我爱学习"；
+		 void print（）；
+}
+
+实现多个接口
+有的时候我们需要让一个类同时继承自多个父类，这件事情在有些编程语言通过多继承方式来实现
+java中只有单继承，一个类只能extend一个父类，但是可以同时实现多个接口，也能达到多继承类似的效果。
+来实现一个多接口的代码包
+
+package packageIA;
+//父类
+public class Animal {
+    protected String name;
+    //构造方法
+    public Animal(String name) {
+        this.name = name;
+    }
+}
+//飞行接口
+public interface IFlying {
+    void fly();
+}
+//跑接口
+public interface IRunning {
+    void run();
+}
+//游泳接口
+public interface ISwimming {
+    void Swim();
+}
+
+接下来创建几个具体的动物
+
+猫 是会跑的
+
+public class Cat extends Animal implements IRunning{
+    public Cat(String name) {
+        super(name);
+    }
+    //重写run方法
+    @Override
+    public void run() {
+    System.out.println(this.name+"正在用四条腿跑");
+    }
+}
+
+鱼 是会游泳的
+
+public class Fish extends Animal implements ISwimming {
+    public Fish(String name) {
+        super(name);
+    }
+    //重写swim方法
+    @Override
+    public void Swim() {
+        System.out.println(this.name+"正在用尾巴游泳");
+    }
+}
+
+青蛙 既能跑 有能游泳
+
+public class Frog extends Animal implements IRunning ,ISwimming{
+    public Frog(String name) {
+        super(name);
+    }
+    //重写run方法
+    @Override
+    public void run() {
+        System.out.println(this.name+"正在往前跳");
+    }
+    //重写swim方法
+    @Override
+    public void Swim() {
+        System.out.println(this.name+"正在蹬腿游泳");
+    }
+}
+
+（提示 IDEA使用快捷键 Ctrl +i 快速实现接口）
+还有一种动物，水陆空三栖，鸭子
+
+public class Duck extends Animal implements IRunning,ISwimming,IFlying{
+    public Duck(String name) {
+        super(name);
+    }
+
+    @Override
+    public void fly() {
+        System.out.println(this.name+"正在用翅膀飞");
+    }
+
+    @Override
+    public void run() {
+        System.out.println(this.name+"正在用两条腿跑");
+    }
+
+    @Override
+    public void Swim() {
+        System.out.println(this.name+"正飘在水上");
+    }
+}
+
+上面展示了java中面向对象中常见的用法：一个类继承一个父类，同时实现多个接口
+继承表达的含义是：is-a 语义，而接口表达的是 具有XXX的特性。
+猫是一种动物，具有会跑的特性
+鱼是一种动物，具有会游泳的特性
+青蛙是一种动物，具有会跑会游泳的特性
+鸭子是一种动物，具有会跑会游泳会飞的特性
+这样设计的好处，时刻牢记多态的好处，可以不用在意类型，有了接口之后，类的使用者就可以不用关心具体的类型，而只关注某个类是否具备某种能力。
+
+现在给包中添加一个测试类，实现一个方法叫 “散步”
+
+public static void walk(IRunning running) {
+        System.out.println("我带着伙伴去散步");
+        running.run();
+    }
+    //在这个walk内部，我们并不关注到底是那种动物
+    // 只要参数是会跑的，就行
+    public static void main(String[] args) {
+        Cat cat =new Cat("小猫");
+        walk(cat);
+        Frog frog=new Frog("小青蛙");
+        walk(frog);
+    }
+}
+//执行结果：
+我带着伙伴去散步
+小猫正在用四条腿跑
+我带着伙伴去散步
+小青蛙正在往前跳
+
+甚至参数可以不是"动物"，只要会跑
+新建一个Robot 类来测试
+
+public class Robot implements IRunning{
+    private String name;
+
+    public Robot(String name) {
+        this.name = name;
+    }
+    @Override
+    public void run() {
+        System.out.println(this.name+"正在用轮子跑");
+    }
+}
+//在Test测试类中添加调用
+  Robot robot=new Robot("机器人");
+        walk(robot);
+//执行结果：
+机器人正在用轮子跑
