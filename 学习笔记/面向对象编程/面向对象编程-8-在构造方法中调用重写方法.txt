@@ -1,0 +1,54 @@
+在构造方法中调用重写方法
+创建两个类，B是父类，D是子类，D中重写func方法，并且在B的构造方法中调用func
+
+//B父类
+
+public class B {
+    public B(){
+        //啥也不干
+           System.out.println("构造B对象");
+        	func();
+        	//代码执行到这里的时候，不会执行下面的func方法，而是执行子类D中的func方法。
+    }
+    public void func(){
+        System.out.println("B.func()");
+    }
+}
+//D子类
+public class D extends B{
+    private int num=1;
+     public D(){
+        System.out.println("构造D对象");
+    }
+    @Override
+    public void func() {
+        System.out.println("D.func() "+num);
+    }
+}
+//测试Test
+public class Test {
+    public static void main(String[] args) {
+        D d=new D();
+    }
+}
+//执行结果：
+构造B对象
+D.func() 0
+构造D对象
+
+此处发现 num的值是0，为啥
+先分析 num的值是0，说明还没有被初始化。
+构造D对象的同时，会调用到B的构造方法。
+B的构造方法中调用了func方法，因为D中也有一个func方法，此时会触发动态绑定，会调到D中的 func方法。
+此时D对象自身还没有构造，此时num处在未初始化的状态，所以值是0；
+
+创建一个子类的实例，回就回同时创建出一个父类的实例。父类的构造方法先被调用，然后才调用子类的构造方法。
+构造方法尽可能简单，尽量像慎重去调用其他方法，防止这个被调用的方法被子类覆写，出现不可预期的情况。
+
+总结
+多态是面向对象程序设计中比较难理解的部分，多态带来的好处将会在抽象类和接口上体现出来。
+
+多态其实是一个更广泛的概念，和继承这样的语法并没有必然联系。
+
+无论什么语言，多态的核心就是调用者不必关注对象的具体类型，这是降低用户使用成本的一种重要方式。
+
