@@ -1,0 +1,70 @@
+接口间的继承
+接口可以继承一个接口，达到复用的效果，使用extends关键字
+
+public interface IRunning {
+    void run();
+}
+public interface ISwimming {
+    void Swim();
+}1465
+public interface ISwimming {
+    void Swim();
+}
+//两栖动物、能跑能游泳
+interface IAmphibious extends IRunning ,ISwimming{
+
+}
+calss forg implements IAphibious{
+ @Override
+    public void run() {
+    }
+    @Override
+    public void Swim() {
+    }
+}
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+通过接口继承创建一个新的接口IAmphbious表示两栖的，此时实现接口创建的forg类，就继续要实现run方法，也需要实现swim方法。
+接口间的继承相当于把多个接口合并在一起。
+
+总结一下：
+抽象类和接口都是Java中常见使用方式，都需要重点掌握，同时又要认清楚两者的区别（重点）
+**核心区别：**抽象类中可以包含普通方法和普通字段，这样的普通方法和字段可以被子类直接调用（不必重写），而接口中不能包含普通方法，子类必须重写所有的抽象方法。
+
+比如说：
+
+class Animal {
+  protected String name;
+  public Animal(String name) { 
+  this.name = name; 
+        }
+ } 
+1
+2
+3
+4
+5
+6
+这个Animal中包含一个那么熟悉，这个属性在任何子类中都存在，因此此处的Animal只能作为一个抽象类，而不应该成为一个接口。
+
+抽象类存在的意义是为了让编译器更好的校验, 像 Animal 这样的类我们并不会直接使用, 而是使用它的子类. 万 一不小心创建了 Animal 的实例, 编译器会及时提醒我们
+
