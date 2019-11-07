@@ -1,0 +1,219 @@
+String类
+大部分编程语言都有一个专门的类型类型表示字符串
+C语言除外
+大部分语言包括：
+数字 字符串 数组 哈希表
+PHP中的数组就是哈希表，哈希表就是数组
+1、创建字符串
+
+public class Test {
+    public static void main(String[] args) {
+        //创建String方式一
+        String str1="dai";//"dai"这样的字符串字面值常量，类型也是String
+        //创建String方式二
+        String str3= new String("召");//String也是引用类型，string str="hello";
+        //创建String方式三
+       char [] arr={'a','b','c'};
+       String str3=new String(arr);
+    }
+}
+
+byte表示字节，占8个bit位
+char表示字符，占两个byte字节，不光能表示ASCII字符，还能表示简体中文这样的语言字符。
+java 中的 char 按照unicode （相当于一张更大的ASCLL码表）的编码方式来编写
+
+注意事项：
+"hello"这样的字符串字面常量值，类型也是String
+String 也引用类型，Strng str=“hello”，这样的代码内存布局如下
+
+回忆 "引用"
+我们曾经在讲数组的时候就提到了引用的概念. 引用类似于 C 语言中的指针, 只是在栈上开辟了一小块内存空间保存一个地址. 但是引用和指针又不太相同, 指 针能进行各种数字运算(指针+1)之类的, 但是引用不能, 这是一种 “没那么灵活” 的指针.
+另外, 也可以把引用想象成一个标签, “贴” 到一个对象上. 一个对象可以贴一个标签, 也可以贴多个. 如果一个对 象上面一个标签都没有, 那么这个对象就会被 JVM 当做垃圾对象回收掉.
+Java 中数组, String, 以及自定义的类都是引用类型。
+
+由于String 是引用类型，因此对于以下代码
+
+String str1="hello";
+String str2=str1;
+
+
+修改str1，str2也会变化吗
+
+str="word";
+System.out.println(str2);
+//执行结果
+Hello
+
+我们发现, “修改” str1 之后, str2 也没发生变化, 还是 hello?
+事实上, str1 = “world” 这样的代码并不算 “修改” 字符串, 而是让 str1 这个引用指向了一个新的 String 对象.
+
+2、字符串比较相等
+如果现在有两个int型变量，判断其相等可以使用 == 完成。
+
+int x = 10 ;
+ int y = 10 ;
+  System.out.println(x == y); 
+// 执行结果
+ true 
+
+如果说现在在String类对象上使用 == ？
+代码1：内存布局如图一
+
+String str1 = "Hello"; 
+String str2 = "Hello"; 
+System.out.println(str1 == str2); 
+// 执行结果 
+true    
+
+代码2：内存布局如图二
+
+String str1 = new String("Hello"); 
+String str2 = new String("Hello");
+ System.out.println(str1 == str2);
+// 执行结果
+ false
+
+通过 String str1 = new String(“Hello”); 这样的方式创建的 String 对象相当于再堆上另外开辟了空间来存储 “Hello” 的内容, 也就是内存中存在两份 “Hello”.
+
+String 使用 == 比较并不是在比较字符串内容, 而是比较两个引用是否是指向同一个对象.
+
+关于对象的比较
+面向对象编程语言中, 涉及到对象的比较, 有三种不同的方式, 比较身份, 比较值, 比较类型. 在大部分编程语言中 的 == 是用来比较值的，java中的是用来比较身份的。
+
+Java中要想比较字符串的内容，必须使用String提供的equals方法
+
+String str1 = new String("Hello"); 
+String str2 = new String("Hello"); 
+System.out.println(str1.equals(str2));
+ // System.out.println(str2.equals(str1));
+ // 或者这样写也行
+// 执行结果 
+true
+
+equals使用注意事项
+String str = new String(“Hello”);
+
+// 方式一
+System.out.println(str.equals(“Hello”));
+// 方式二
+System.out.println(“Hello”.equals(str));
+//推荐使用方式二，如果str为空，这使用方式一就会抛出空指针异常
+3、字符串常量池
+a) 直接赋值
+
+  String str1 = "hello" ;
+  String str2 = "hello" ;  
+  String str3 = "hello" 
+  ;  System.out.println(str1 == str2); 
+  // true
+   System.out.println(str1 == str3); 
+   // true 
+   System.out.println(str2 == str3);
+    // true
+
+
+为什么现在并没有开辟新的堆内存空间呢？
+String类的设计使用了共享设计模式
+
+在JVM底层实际上会自动维护一个对象池（字符串常量池)
+如果现在采用了直接赋值的模式进行String类的对象实例化操作，那么该实例化对象（字符串内容）将自动保存 到这个对象池之中。
+如果下次继续使用直接赋值的模式声明String类对象，此时对象池之中如若有指定内容，将直接进行引用 如若没有，则开辟新的字符串对象而后将其保存在对象池之中以供下次使用。
+
+b) 采用构造方法
+类对象使用构造方法实例化是标准做法。分析如下程序：
+
+String str = new String("hello") ; 
+1
+这样的做法有两个缺点:
+如果使用String构造方法就会开辟两块堆内存空间，并且其中一块堆内存将成为垃圾空间(字符串常量 “hello” 也 是一个匿名对象, 用了一次之后就不再使用了, 就成为垃圾空间, 会被 JVM 自动回收掉).
+2. 字符串共享问题. 同一个字符串可能会被存储多次, 比较浪费空间.
+
+我们可以使用 String 的 intern （）方法来手动把 String 对象加入到字符串常量池中
+
+intern（）做的事情
+1、先查找当前这个字符串是否在常量池中国包含，（根据哈希表查找）
+2、如果包含了就直接返回对象的引用
+3、如果没有包含那就根据当前这个对象的值，在池中构造一个相同值的新对象，并返回这个池里的引用。
+
+// 该字符串常量并没有保存在对象池之中
+
+ String str1 = new String("hello") ;  
+ String str2 = "hello" ;  
+ System.out.println(str1 == str2);  
+ 
+// 执行结果
+ false  
+String str1 = new String("hello").intern() ; 
+ String str2 = "hello" ;  
+ System.out.println(str1 == str2);  
+ 
+// 执行结果 
+true 
+
+面试题：请解释String类中两种对象实例化的区别
+
+直接赋值：只会开辟一块堆内存空间，并且该字符串对象可以自动保存在对象池中以供下次使用。
+构造方法：会开辟两块堆内存空间，其中一块成为垃圾空间，不会自动保存在对象池中，可以使用 intern()方法手工入池。
+综上, 我们一般采取直接赋值的方式创建 String 对象
+4、理解字符换不可变
+
+字符串是一种不可变对象. 它的内容不可改变.
+String 类的内部实现也是基于 char[] 来实现的, 但是 String 类并没有提供 set 方法之类的来修改内部的字符数组.
+感受下形如这样的代码:
+
+String str = "hello" ;  
+str = str + " world" ; 
+ str += "!!!" ; 
+  System.out.println(str);  
+ 
+// 执行结果 hello world!!! 
+
+形如 += 这样的操作, 表面上好像是修改了字符串, 其实不是. 内存变化如下:
+
+
++= 之后 str 打印的结果却是变了, 但是不是 String 对象本身发生改变, 而是 str 引用到了其他的对象.
+回顾引用
+引用相当于一个指针, 里面存的内容是一个地址. 我们要区分清楚当前修改到底是修改了地址对应内存的内容发 生改变了, 还是引用中存的地址改变了。
+
+那么如果实在需要修改字符串,
+例如, 现有字符串 str = “Hello” , 想改成 str = “hello” , 该怎么办?
+a) 常见办法: 借助原字符串, 创建新的字符串
+
+String str = "Hello";
+ str = "h" + str.substring(1); 
+ System.out.println(str); 
+ 
+// 执行结果 hello 
+
+b) 特殊办法(选学):
+使用 “反射” 这样的操作可以破坏封装, 访问一个类内部的 private 成员. IDEA 中 ctrl + 左键 跳转到 String 类的定义, 可以看到内部包含了一个 char[] , 保存了字符串的内容.
+
+String str = "Hello"; 
+
+// 获取 String 类中的 value 字段. 这个 value 和 String 源码中的 value 是匹配的.  
+//Field valueField = String.class.getDeclaredField("value"); 
+// 将这个字段的访问属性设为 true 
+valueField.setAccessible(true); 
+// 把 str 中的 value 属性获取到. 
+ char[] value = (char[]) valueField.get(str); 
+ // 修改 value 的值
+  value[0] = 'h'; 
+ 
+System.out.println(str); 
+ 
+// 执行结果 hello 
+
+关于反射
+反射是面向对象编程的一种重要特性, 有些编程语言也称为 “自省”.
+指的是程序运行过程中, 获取/修改某个对象的详细信息(类型信息, 属性信息等), 相当于让一个对象更好的 “认清 自己” .
+Java 中使用反射比较麻烦一些. 我们后面的课程中会详细介绍反射的具体用法。
+为什么 String 要不可变?(不可变对象的好处是什么?)
+
+方便实现字符串对象池. 如果 String 可变, 那么对象池就需要考虑何时深拷贝字符串的问题了.
+str1和str2指向同一个池中的字符串对象。
+String s1=qqq;
+String s2=qqq;
+//假设string可变们就会导致str1对字符穿的修改，会影响到str2.
+
+不可变对象是线程安全的.
+不可变对象更方便缓存 hash code, 作为 key 时可以更高效的保存到 HashMap 中.
