@@ -1,0 +1,53 @@
+1、字符串比较
+常见方法
+
+7、不区分大小写
+
+String str1="hello";
+    String str2="Hello";
+    System.out.println(str1.equals(str2));
+    //执行结果：false
+    System.out.println(str1.equalsIgnoreCase(str2));
+    //执行结果：true
+
+在String类中compareTo()方法是一个很重要的方法，该方法返回一个整型，该数据会根据大小关系返回三类内容：
+1、相等：返回0
+2、小于：返回内容小于0
+3、大于：返回内容大于0
+观察compareTo（）比较
+
+   System.out.println("A".compareTo("a"));//执行结果：  -32
+    System.out.println("a".compareTo("A"));//执行结果：   32
+    System.out.println("A".compareTo("A"));//执行结果：   0
+    System.out.println("AB".compareTo("AC"));//执行结果： -1
+    System.out.println("代".compareTo("码"));//执行结果：-10526
+        
+
+compareTo （）是一个可以区分大小关系的方法，是String方法里一个很重要的方法
+字符串的比较大小规则，三个字总结 “字典序”，相当于判定两个字符串在一本词典的前后位置，先比较第一个字符的大小，（根据Unicode的值比较），如果相同，就依次比较后面的内容。
+
+2、字符串查找
+从一个完整的字符串之中弄可以判断指定内容是否存在，对于查找方法有如下定义：
+
+9、最方便的字符串查找
+
+  String str="helloworld";
+    System.out.println(str.contains("world"));
+    //执行结果：true
+
+10、使用indexOf（）方法进行完成
+使用indexOf方法时要注意，如果内容重复，只能查找返回查的第一个位置。在进行查找的时候，往往会判断开头或者结尾
+
+ String str ="helloworld";
+        System.out.println(str.indexOf("world"));//5，w开始的索引
+        System.out.println(str.indexOf("bit"));//-1 没找到
+         if(str.indexOf("hello")!=-1){
+            System.out.println("可以查找到字符串");
+        }
+
+其他方法
+https://blog.csdn.net/qq_45477141/article/details/102938109
+
+
+
+
