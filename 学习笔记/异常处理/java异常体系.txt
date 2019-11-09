@@ -110,7 +110,7 @@ if (!Test.password.equals(password)) {
  throw new PasswordError("密码错误");
 }
 
-注意事项：
+注意：
 自定义异常通常会继承自 Exception 或者 RuntimeException
 继承自 Exception 的异常默认是受查异常
 继承自 RuntimeException 的异常默认是非受查异常.
