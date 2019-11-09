@@ -1,0 +1,118 @@
+java 语言规范将派生出Error类或RuntimeRxpection类的所有异常称为非受查异常，所有其他的异常称为受查异常（编译时异常）。
+如果一段代码可能抛出受查异常，那么必须下那是进行处理。
+
+ public static void main(String[] args) {
+         System.out.println(readFile());
+    }
+    public static String readFile(){
+         //尝试打开文件，并读取其中一行
+        File file=new File("");
+        //使用文件对象构造Scanner对象
+        Scanner scanner=new Scanner(file);
+        return scanner.nextLine();
+    }
+    //编译出错：
+   Error:(13, 22) java: 未报告的异常错误java.io.FileNotFoundException; 必须对其进行捕获或声明以便抛出
+
+查看Scanner的构造方法可以发现, 存在 这样的异常说明.
+
+public Scanner(File source) throws FileNotFoundException {
+...
+}
+
+FIleNotFoundException这样的异常就是受查异常，如果不显示处理，编译无法通过。
+a) 使用 try catch 包裹起来
+
+ public static void main(String[] args) {
+         System.out.println(readFile());
+    }
+    public static String readFile(){
+
+        File file=new File("D:\\Test.txt");
+        Scanner scanner=null;
+        try{
+            scanner=new Scanner(file)；
+        }catch(FileAlreadyExistsException e){
+           e.printStackTrace();
+        }
+        return scanner.nextLine();
+    }
+
+b) 在方法上加上异常说明, 相当于将处理动作交给上级调用者
+
+ public static void main(String[] args) {
+         try {
+             System.out.println(readFile());
+         }catch(FileAlreadyExistsException e){
+             e.printStackTrace();
+         }
+    }
+    public static String readFile()throws FileAlreadyExistsException{
+        File file=new File("D:\\Test.txt");
+        Scanner scanner=null;
+        return scanner.nextLine();
+    }
+
+自定义异常类
+java 中虽然已经内置了丰富的异常类, 但是我们实际场景中可能还有一些情况需要我们对异常类进行扩展, 创建符合我 们实际情况的异常.
+
+实现一个用户登录功能
+
+public class Test {
+private static String userName = "admin";
+ private static String password = "123456";
+
+public static void main(String[] args) {
+ login("admin", "123456");
+}
+
+public static void login(String userName, String password) { 
+if (!Test.userName.equals(userName)) {
+// TODO 处理用户名错误
+}
+if (!Test.password.equals(password)) {
+// TODO 处理密码错误
+}
+System.out.println("登陆成功");
+	}
+}
+
+此时我们在处理用户名密码错误的时候可能就需要抛出两种异常. 我们可以基于已有的异常类进行扩展(继承), 创建和 我们业务相关的异常类.
+
+  class UserError extends Exception {
+   public UserError(String message) {
+super(message);
+}
+}
+
+class PasswordError extends Exception { 
+public PasswordError(String message) {
+super(message);
+}
+
+此时我们的login代码可以改成
+
+public static void main(String[] args) {
+ try {
+login("admin", "123456");
+} catch (UserError userError) {
+ userError.printStackTrace();
+} catch (PasswordError passwordError) {
+ passwordError.printStackTrace();
+}
+}
+
+public static void login(String userName, String password) throws UserError, PasswordError {
+if (!Test.userName.equals(userName)) { 
+throw new UserError("用户名错误");
+}
+if (!Test.password.equals(password)) {
+ throw new PasswordError("密码错误");
+}
+
+注意事项：
+自定义异常通常会继承自 Exception 或者 RuntimeException
+继承自 Exception 的异常默认是受查异常
+继承自 RuntimeException 的异常默认是非受查异常.
+
+
