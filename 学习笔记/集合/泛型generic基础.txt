@@ -1,0 +1,83 @@
+泛型(generic)基础
+泛型的引入
+问题：我们之前实现过的顺序表，只能保存 int 类型的元素，如果现在需要保存 指向 Person 类型对象的引用的顺 序表，请问应该如何解决？如果又需要保存指向 Book 对象类型的引用呢？
+回答：
+
+首先，我们在学习多态过程中已知一个前提，基类的引用可以指向子类的对象。
+其次，我们也已知 Object 是 java 中所有类的祖先类。
+那么，要解决上述问题，我们很自然的想到一个解决办法，将我们的顺序表的元素类型定义成 Object 类型，这样我 们的 Object 类型的引用可以指向 Person 类型的对象或者指向 Book 类型的对象了。
+public class Main {
+    private Object [] arr;//保存顺序表的元素，即Object类型的引用
+    private int size;//保存顺序表内数据个数
+    public void add(Object o){
+        //尾插
+    }
+    public Object get(int index){
+        //获取index位置的元素
+    }
+}
+
+/这样就可以自由的存储指向任意类型对象的引用到我们的顺序表。
+
+MyArrayList books = new MyArrayList();
+ for (int i = 0; i < 10; i++) {
+     books.add(new Book());  // 尾插 10 本书到顺序表 
+     }         
+ MyArrayList people = new MyArrayList();
+ for (int i = 0; i < 10; i++) {
+ people.add(new Person());   // 尾插 10 个人到顺序表 
+	}
+
+现在的MyArrsyList虽然可以做到添加任意类型的引用到其中了，但遇到下面的代码就会产生问题。
+
+MyArrayList books = new MyArrayList();
+ books.add(new Book);
+ 
+// 将 Object 类型转换为 Person 类型，需要类型转换才能成功
+ // 这里编译正确，但运行时会抛出异常 ClassCastException Person person = (Person)books.get(0);
+
+这里的问题越早暴露出来，就会越降低风险
+1、增加编译期类型的检查
+2、取消类型转换的使用，因此泛型就诞生了
+
+泛型的分类
+1、泛型类
+2、泛型方法
+
+演示：
+
+public class MyArrayList <E>{
+    
+    private E [] array;
+    private int size;
+    .....
+}
+
+泛型类可以一次有多个类型变量，用逗号分隔。
+1.泛型是作用在编译期的一种机制，即运行期间没有泛型的概念。
+2.泛型代码在运行期间，就是我们上面提到的，利用Object达到的效果。
+
+泛型类的使用
+
+// 定义了一个元素是 Book 引用的 MyArrayList
+ MyArrayList<Book> books = new MyArrayList<Book>(); 
+ books.add(new Book());
+ 
+// 会产生编译错误，Person 类型无法转换为 Book 类型
+ books.add(new Person());
+ 
+// 不需要做类型转换
+ Book book = book.get(0);
+ 
+// 不需要做类型转换 
+// 会产生编译错误，Book 类型无法转换为 Person 类型 
+Person person = book.get(0);
+
+泛型类的使用方式：只需要在所有类后边跟上尖括号，并且尖括号内是真正的类型，E可以看成是最后的类型。
+Book只能想象成E的类型，但实际上E的类型还是Objict。
+泛型总结
+泛型是为了解决某些容器、算法等代码的通用性而引入，并且能在编译期间做类型检查。
+泛型利用的是 Object 是所有类的祖先类，并且父类的引用可以指向子类对象的特定而工作。
+泛型是一种编译期间的机制，即 MyArrayList 和 MyArrayList 在运行期间是一个类型。
+泛型是 java 中的一种合法语法，标志就是尖括号 <>
+
