@@ -1,0 +1,102 @@
+接口 interfaces
+基本关系
+一、Colleation：用来存储管理一组对象objects，这些对象一般被称为元素elements;
+1、Set:元素不能重复，背后隐含查找/搜索的意义
+SortedSet:一组有序的不能重复的元素
+2、List:线性结构
+3、queue队列
+4、deque:双端队列
+二、Map：键值对Key-value-Pair,背后隐含查找/搜索的意义
+1、SortedMap:一组有序的键值对
+
+Collection接口和常用方法
+
+public class Testcollection {
+    public static void main(String[] args) {
+        //简单类型不能作为泛型的参数
+        
+        //泛型语法、集合中保存的是String类型的若干个对象
+        //本身是ArrayList<String>类型
+        Collection<String> collection=new ArrayList<String>();
+        //使用isEmpaty()和size();
+        System.out.println(collection.isEmpty());
+        //判断当前集合是不是空,空为true，非空为false
+        System.out.println(collection.size());//求集合中的元素个数
+        //使用add
+        collection.add("张三");
+        collection.add("李四");
+        collection.add("王五");
+        System.out.println(collection.isEmpty());
+        System.out.println(collection.size());
+        //使用toArray
+        Object [] arr=collection.toArray();//类型强制转换
+        System.out.println(Arrays.toString(arr));
+
+        System.out.println("使用for each遍历集合类");
+        for(String s:collection){
+            System.out.println(s);
+        }
+
+        //使用contains方法(查看元素是否在集合中)
+        boolean ret=collection.contains("赵六");
+        boolean ret2=collection.contains("王五");
+        System.out.println("ret="+ret+"  ret2="+ret2);
+
+        //删除方法
+        System.out.println("删除张三元素");
+        collection.remove("张三");
+        for(String s:collection){
+            System.out.println(s);
+        }
+
+        System.out.println("=========================================");
+        Collection<String> collection1= new ArrayList<String>();
+        System.out.println(collection1.isEmpty());
+        System.out.println(collection1.size());
+        collection1.add("a");
+        collection1.add("b");
+        collection1.add("c");
+        System.out.println(collection1.isEmpty());
+        System.out.println(collection1.size());
+        Object []arrays=collection1.toArray();
+        System.out.println(Arrays.toString(arrays));
+        System.out.println();
+    }
+}
+
+Map接口和常用方法
+
+public class Collection {
+    public static void main(String[] args) {
+        //Map的基本用法
+        Map<String,String> map=new HashMap<>();
+
+    //使用isEmpty()和size();
+        System.out.println(map.isEmpty());
+        System.out.println(map.size());
+
+        //使用put插入键值对(将指定的k-v放入Map中)
+        map.put("及时雨","宋江");
+        map.put("花和尚","鲁智深");
+        map.put("行者","武松");
+        System.out.println(map.isEmpty());
+        System.out.println(map.size());
+
+        //使用get根据key查找value(根据指定的key找到对应的v,但是根据v找不到k)
+        System.out.println(map.get("花和尚")); //执行结果：鲁智深
+        System.out.println(map.get("智多星"));//查不到返回null
+        System.out.println(map.getOrDefault("智多星","吴用"));
+        //根据指定的 k 查找对应的 v，没有找到用默认值代替
+        //如果没有对应的key值，就会返回null;
+        map.put("行者","武二郎");
+        //put方法如果可以已经存在，新的value就会覆盖旧的value
+        System.out.println(map.get("行者"));//执行结果：武二郎
+
+        //判断是否包含k或者v
+        System.out.println(map.containsKey("行者"));
+        System.out.println(map.containsValue("武松"));
+        //将所有键值对返回
+    }
+}
+
+calsses接口
