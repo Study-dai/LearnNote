@@ -1,0 +1,80 @@
+循环队列
+队列数组实现就是循环队列
+
+关键：头或者尾达到数组最后一个元素，接下来在进行入队或者出队，就让这样的标记来到数组开头。
+队列为空：head和tail相等，队列为空
+队列满了：head和tail相等（判断size是否为空，不为空表示队列满了）
+
+数组下标循环技巧
+
+下标最后再往后(oﬀset 小于 array.length): index = (index + oﬀset) % array.length
+下标最前再往前(oﬀset 小于 array.length): index = (index + array.length - oﬀset) % array.length
+实现：
+
+public class MyQueue2 {
+    private int [] data=new int[100];
+    private  int head=0;//队首元素下标
+    private int tail=0;//队尾元素下标
+    private int size=0;
+    
+    //1.入队列，插入成功返回true，失败返回false
+    // 如果队列满了就会插入失败
+    public boolean offer(int x){
+        if(size==data.length){
+            return false;
+        }
+        //新元素放到tail的位置上
+        data[tail]=x;
+        tail++;
+        if(tail==data.length){
+            tail=0;
+        }
+        size++;
+        return true;
+    }
+    //2.出队列
+    public Integer poll(){
+        if(size==0){
+            return null;
+        }
+        Integer ret=data[head];
+        head++;
+        if(head==data.length){
+            head=0;
+        }
+        size--;
+        return ret;
+    }
+    //3.取队列首元素
+    public Integer peek(){
+        if(size==0){ 
+            return null;
+        }
+        return data[head];
+    }
+    //4、判定为空
+    public boolean isEmpty(){
+        return size==0;
+    }
+    //5、取长度
+    public int size(){
+        return size;
+    }
+}
+ //测试
+    public static void main(String[] args) {
+        MyQueue2 myQueue2=new MyQueue2();
+        myQueue2.offer(1);
+        myQueue2.offer(2);
+        myQueue2.offer(3);
+        myQueue2.offer(4);
+        while(!myQueue2.isEmpty()){
+            Integer cur=myQueue2.peek();
+            System.out.println(cur);
+            myQueue2.poll();
+        }
+//执行结果：
+
+双端队列
+
+双端队列（deque）是指允许两端都可以进行入队和出队操作的队列，deque 是 “double ended queue” 的简称。那 就说明元素可以从队头出队和入队，也可以从队尾出队和入队。
