@@ -24,19 +24,7 @@
         Exception in thread "main" java.lang.ArithmeticException: 抛出0异常
         at packageExpection.Test.divide(Test.java:147)
         at packageExpection.Test.main(Test.java:143)
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
+
 关于 ?nally 的注意事项
 ?nally 中的代码保证一定会执行到. 这也会带来一些麻烦.
 
@@ -51,25 +39,11 @@
         }
     }
     //执行结果：20
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
+
 注意:
 ?nally 执行的时机是在方法返回之前(try 或者 catch 中如果有 return 会在这个 return 之前执行 ?nally).
 
 但是如果?nally 中也存在 return 语句, 那么就会执行 ?nally 中的 return, 从而不会执行到 try 中原有的 return.
 
-一般我们不建议在 ?nally 中写 return (被编译器当做一个警告).
+一般我们不建议在 ?nally 中写 return (被编译器当做是一个警告).
 
-
-————————————————
-版权声明：本文为CSDN博主「SUST.dai」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/qq_45477141/article/details/102976851
