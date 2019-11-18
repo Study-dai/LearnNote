@@ -18,6 +18,7 @@ public class BinnaryTree {
         C.right = G;
         return A;
     }
+//树的方法
 
     //递归思想：终止条件+递归公式
     //前序遍历
