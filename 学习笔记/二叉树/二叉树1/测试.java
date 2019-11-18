@@ -16,10 +16,11 @@
         System.out.println(binnaryTree.getLeafSize1(root));
 
     }
-/*执行结果：
+
+执行结果：
 A B D E H C F G 
 D B E H A F C G 
 D H E B F G C A 
 8
 4
- */
+ 
