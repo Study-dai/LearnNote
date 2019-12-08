@@ -1,0 +1,92 @@
+package practice;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class card {
+   public int rank;
+   public String suit;
+
+    @Override
+    public String toString() {
+        return "card{" +
+                "rank=" + rank +
+                ", suit='" + suit + '\'' +
+                '}';
+    }
+}
+class CardDemo{
+    public static final String[] SUITS={"?","?","?","?"};
+    //买一副牌
+    private static List<card> buyDeck(){
+        List<card>deck=new ArrayList<>(52);
+        for (int i = 0; i <4; i++) {
+            for (int j = 0; j <=13 ; j++) {
+                String suit=SUITS[i];
+                int rank=j;
+                card card=new card();
+                card.rank=rank;
+                card.suit=suit;
+                deck.add(card);
+            }
+        }
+        return deck;
+    }
+    private static void swap(List<card> deck,int i,int j){
+        card t=deck.get(i);
+        deck.set(i,deck.get(j));
+        deck.set(j,t);
+    }
+    private static void shuffle(List<card> deck){
+        Random random=new Random(20191208);
+        for (int i = deck.size()-1; i >0 ; i--) {
+            int r=random.nextInt(i);
+            swap(deck,i,r);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<card>deck=buyDeck();
+        System.out.println("刚买回来的牌：");
+        System.out.println(deck);
+        shuffle(deck);
+        System.out.println("洗过的牌：");
+        System.out.println(deck);
+        //三个人 没人轮流抓五张牌
+        List<List<card>>hands=new ArrayList<>();
+        hands.add(new ArrayList<>());
+        hands.add(new ArrayList<>());
+        hands.add(new ArrayList<>());
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 3; j++) {
+                hands.get(j).add(deck.remove(0));
+            }
+        }
+        System.out.println("剩余的牌：");
+        System.out.println(deck);
+        System.out.println("A手中的牌");
+        System.out.println(hands.get(0));
+        System.out.println("B手中的牌");
+        System.out.println(hands.get(1));
+        System.out.println("C手中的牌");
+        System.out.println(hands.get(2));
+    }
+}
+/*
+执行结果：
+刚买回来的牌：
+[card{rank=0, suit='?'}, card{rank=1, suit='?'}, card{rank=2, suit='?'}, card{rank=3, suit='?'}, card{rank=4, suit='?'}, card{rank=5, suit='?'}, card{rank=6, suit='?'}, card{rank=7, suit='?'}, card{rank=8, suit='?'}, card{rank=9, suit='?'}, card{rank=10, suit='?'}, card{rank=11, suit='?'}, card{rank=12, suit='?'}, card{rank=13, suit='?'}, card{rank=0, suit='?'}, card{rank=1, suit='?'}, card{rank=2, suit='?'}, card{rank=3, suit='?'}, card{rank=4, suit='?'}, card{rank=5, suit='?'}, card{rank=6, suit='?'}, card{rank=7, suit='?'}, card{rank=8, suit='?'}, card{rank=9, suit='?'}, card{rank=10, suit='?'}, card{rank=11, suit='?'}, card{rank=12, suit='?'}, card{rank=13, suit='?'}, card{rank=0, suit='?'}, card{rank=1, suit='?'}, card{rank=2, suit='?'}, card{rank=3, suit='?'}, card{rank=4, suit='?'}, card{rank=5, suit='?'}, card{rank=6, suit='?'}, card{rank=7, suit='?'}, card{rank=8, suit='?'}, card{rank=9, suit='?'}, card{rank=10, suit='?'}, card{rank=11, suit='?'}, card{rank=12, suit='?'}, card{rank=13, suit='?'}, card{rank=0, suit='?'}, card{rank=1, suit='?'}, card{rank=2, suit='?'}, card{rank=3, suit='?'}, card{rank=4, suit='?'}, card{rank=5, suit='?'}, card{rank=6, suit='?'}, card{rank=7, suit='?'}, card{rank=8, suit='?'}, card{rank=9, suit='?'}, card{rank=10, suit='?'}, card{rank=11, suit='?'}, card{rank=12, suit='?'}, card{rank=13, suit='?'}]
+洗过的牌：
+[card{rank=1, suit='?'}, card{rank=9, suit='?'}, card{rank=13, suit='?'}, card{rank=2, suit='?'}, card{rank=3, suit='?'}, card{rank=1, suit='?'}, card{rank=4, suit='?'}, card{rank=12, suit='?'}, card{rank=7, suit='?'}, card{rank=7, suit='?'}, card{rank=1, suit='?'}, card{rank=4, suit='?'}, card{rank=13, suit='?'}, card{rank=12, suit='?'}, card{rank=2, suit='?'}, card{rank=3, suit='?'}, card{rank=1, suit='?'}, card{rank=11, suit='?'}, card{rank=13, suit='?'}, card{rank=2, suit='?'}, card{rank=11, suit='?'}, card{rank=6, suit='?'}, card{rank=9, suit='?'}, card{rank=10, suit='?'}, card{rank=9, suit='?'}, card{rank=6, suit='?'}, card{rank=0, suit='?'}, card{rank=0, suit='?'}, card{rank=3, suit='?'}, card{rank=12, suit='?'}, card{rank=10, suit='?'}, card{rank=4, suit='?'}, card{rank=9, suit='?'}, card{rank=5, suit='?'}, card{rank=4, suit='?'}, card{rank=11, suit='?'}, card{rank=3, suit='?'}, card{rank=7, suit='?'}, card{rank=2, suit='?'}, card{rank=8, suit='?'}, card{rank=0, suit='?'}, card{rank=5, suit='?'}, card{rank=6, suit='?'}, card{rank=5, suit='?'}, card{rank=6, suit='?'}, card{rank=10, suit='?'}, card{rank=11, suit='?'}, card{rank=13, suit='?'}, card{rank=8, suit='?'}, card{rank=8, suit='?'}, card{rank=10, suit='?'}, card{rank=0, suit='?'}, card{rank=12, suit='?'}, card{rank=5, suit='?'}, card{rank=8, suit='?'}, card{rank=7, suit='?'}]
+剩余的牌：
+[card{rank=3, suit='?'}, card{rank=1, suit='?'}, card{rank=11, suit='?'}, card{rank=13, suit='?'}, card{rank=2, suit='?'}, card{rank=11, suit='?'}, card{rank=6, suit='?'}, card{rank=9, suit='?'}, card{rank=10, suit='?'}, card{rank=9, suit='?'}, card{rank=6, suit='?'}, card{rank=0, suit='?'}, card{rank=0, suit='?'}, card{rank=3, suit='?'}, card{rank=12, suit='?'}, card{rank=10, suit='?'}, card{rank=4, suit='?'}, card{rank=9, suit='?'}, card{rank=5, suit='?'}, card{rank=4, suit='?'}, card{rank=11, suit='?'}, card{rank=3, suit='?'}, card{rank=7, suit='?'}, card{rank=2, suit='?'}, card{rank=8, suit='?'}, card{rank=0, suit='?'}, card{rank=5, suit='?'}, card{rank=6, suit='?'}, card{rank=5, suit='?'}, card{rank=6, suit='?'}, card{rank=10, suit='?'}, card{rank=11, suit='?'}, card{rank=13, suit='?'}, card{rank=8, suit='?'}, card{rank=8, suit='?'}, card{rank=10, suit='?'}, card{rank=0, suit='?'}, card{rank=12, suit='?'}, card{rank=5, suit='?'}, card{rank=8, suit='?'}, card{rank=7, suit='?'}]
+A手中的牌
+[card{rank=1, suit='?'}, card{rank=2, suit='?'}, card{rank=4, suit='?'}, card{rank=7, suit='?'}, card{rank=13, suit='?'}]
+B手中的牌
+[card{rank=9, suit='?'}, card{rank=3, suit='?'}, card{rank=12, suit='?'}, card{rank=1, suit='?'}, card{rank=12, suit='?'}]
+C手中的牌
+[card{rank=13, suit='?'}, card{rank=1, suit='?'}, card{rank=7, suit='?'}, card{rank=4, suit='?'}, card{rank=2, suit='?'}]
+
+*/
