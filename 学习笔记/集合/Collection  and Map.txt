@@ -1,0 +1,91 @@
+package packageerchashu;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Demo {
+    public static void main(String[] args) {
+        //指定类型为Object
+        Collection<Object> collection=new ArrayList<>();
+        //判断集合是否是空
+        System.out.println(collection.isEmpty());//true
+        //求集合中元素的个数
+        System.out.println(collection.size());//0
+        //往集合中添加元素
+         collection.add("d");
+         collection.add(1);
+         collection.add("i");
+        System.out.println(collection.isEmpty());//false
+        System.out.println(collection.size());//3
+        //遍历集合
+        for(Object s:collection){
+            System.out.print(s);//d1i
+        }
+        System.out.println();//换行
+        //使用contains方法查看集合是否在元素中
+        boolean a=collection.contains("a");//false
+        System.out.println(a);
+        //删除集合中的元素
+//        collection.remove("d");//1i
+        for(Object o:collection){
+            System.out.print(o);
+        }
+        System.out.println();//换行;
+        //删除所有元素
+        System.out.println("标记");
+        collection.clear();
+        System.out.println(collection.isEmpty());
+//============================================
+        Collection<String>collection2=new ArrayList<>();
+        System.out.println(collection2.isEmpty());
+        System.out.println(collection2.size());
+        ((ArrayList<String>) collection2).add("A");
+        ((ArrayList<String>) collection2).add("B");
+        ((ArrayList<String>) collection2).add("C");
+        for(String S:collection2){
+            System.out.print(S);
+        }
+        System.out.println();
+        collection2.remove("A");
+        for(String S:collection2){
+            System.out.print(S);
+        }
+        System.out.println();
+        System.out.println(collection.size());
+//========================================================
+        //Map
+        //1、定义
+        Map<Integer,String> map=new HashMap<>();
+        //判断是否为空和求长度
+        System.out.println(map.isEmpty());//true
+        System.out.println(map.size());//0
+        //插入键值对
+        map.put(1,"A");
+        map.put(2,"B");
+        map.put(3,"C");
+        map.put(4,"D");
+        System.out.println(map.size());//4
+        System.out.println(map.isEmpty());//false
+
+        //使用get根据key查找value
+        System.out.print(map.get(1)+" ");
+        System.out.print(map.get(2)+" ");
+        System.out.print(map.get(3)+" ");
+        System.out.print(map.get(4)+" ");
+        //A B C D
+        System.out.println(map.get(5));//null
+        //如果没有对应的key值，就会返回空值
+
+        //根据key查找对应的value 如果没有就会返回默认值
+        //如果有新的value值a 就会覆盖原来的value值 A
+        System.out.println(map.getOrDefault("1","a"));
+        System.out.println(map.getOrDefault(2,"b"));
+
+        //判断是否包含key或者value
+        //包含就返回true 不包含就返回false
+        System.out.println(map.containsKey(1));//true
+        System.out.println(map.containsValue("a"));//false
+
+    }
+}
