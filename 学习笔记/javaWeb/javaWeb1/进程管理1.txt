@@ -17,4 +17,4 @@ public class Test extends Thread{
 }
 
 IDEA中运行上面的程序
-CMD运行gconsole命令 查看java程序运行进程
+CMD运行jconsole命令 查看java程序运行进程
