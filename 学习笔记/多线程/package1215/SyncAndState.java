@@ -1,4 +1,4 @@
-package package1215;
+﻿
 
 public class SyncAndState {
     private synchronized void method(){
