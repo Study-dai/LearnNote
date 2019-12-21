@@ -1,11 +1,11 @@
-package package1221;
+﻿package package1221;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /*
-简易版线程池
+简版线程池
 只考虑正式员工，不考虑临时工 也不考虑拒绝策略
  */
  class MyThreadPool {
