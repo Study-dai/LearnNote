@@ -1,5 +1,4 @@
-package pachage1228;
-
+﻿package pachage1228;
 
 import java.io.IOException;
 import java.net.ServerSocket;
