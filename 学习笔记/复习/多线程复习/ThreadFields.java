@@ -14,3 +14,13 @@ public class ThreadFields {
         System.out.println(currentThread.isInterrupted());//是否被中断
     }
 }
+/*
+执行结果：
+main
+1
+5
+RUNNABLE
+false
+true
+false
+*/
